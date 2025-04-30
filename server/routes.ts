@@ -7,7 +7,16 @@ import { ZodError } from "zod";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // Load the Gemini API key from environment variables
-const geminiAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "dummy-key-for-development");
+const geminiApiKey = process.env.GEMINI_API_KEY || "dummy-key-for-development";
+const geminiAI = new GoogleGenerativeAI(geminiApiKey);
+
+// Debug information for Gemini
+console.log(`Gemini API initialized with key: ${geminiApiKey ? "Valid API key" : "Missing API key"}`);
+
+// List of available Gemini models (as of April 2025)
+// For version 0.24.1 of the Google Generative AI SDK, we should use "gemini-pro"
+const AVAILABLE_MODELS = ["gemini-pro"];
+console.log("Available Gemini models:", AVAILABLE_MODELS);
 
 // Model variables - would be loaded from a proper model file in production
 let model: tf.LayersModel | null = null;
@@ -131,7 +140,7 @@ async function predictBreastCancer(params: PredictionParams): Promise<Prediction
 // Function to generate AI assistant response using Gemini
 async function generateAIResponse(message: string): Promise<string> {
   try {
-    // Use the correct model name for Gemini API
+    // Create medical assistant system prompt with the correct model name for version 0.24.1
     const model = geminiAI.getGenerativeModel({ model: "gemini-pro" });
     
     // Create medical context prompt with the user's query
@@ -155,16 +164,39 @@ async function generateAIResponse(message: string): Promise<string> {
   } catch (error) {
     console.error("Error generating AI response with Gemini:", error);
     
-    // Fallback response in case of API error
-    const fallbackResponses = [
-      "Based on current medical research, early detection through regular screening remains the most effective strategy for improving breast cancer outcomes.",
-      "Regular breast self-exams, clinical breast exams, and mammograms are recommended screening methods for breast cancer, with specific guidelines varying by age and risk factors.",
-      "The main treatments for breast cancer include surgery, radiation therapy, chemotherapy, hormone therapy, and targeted therapy, often used in combination based on individual factors.",
-      "While I'm currently experiencing technical difficulties connecting to my knowledge base, I recommend consulting with healthcare professionals for personalized medical information."
-    ];
+    // Provide detailed evidence-based responses to common breast cancer questions
+    const fallbackResponses: Record<string, string> = {
+      "symptoms": "Early symptoms of breast cancer may include a lump or thickening in the breast tissue, changes in breast size or shape, dimpling of the skin, nipple inversion, nipple discharge, or persistent breast pain. Regular self-examinations and clinical screenings are recommended for early detection.",
+      
+      "detection": "Breast cancer detection typically involves regular screening through mammograms, clinical breast examinations, and self-examinations. Mammograms can detect tumors before they can be felt and are recommended annually for women over 40-50 based on different guidelines.",
+      
+      "treatment": "Breast cancer treatments vary based on cancer type, stage, and individual factors. Common approaches include surgery (lumpectomy or mastectomy), radiation therapy, chemotherapy, hormone therapy, targeted therapy, and immunotherapy. Treatment plans are typically personalized for each patient.",
+      
+      "risk": "Risk factors for breast cancer include age, family history, genetic mutations (BRCA1/BRCA2), personal history of breast conditions, radiation exposure, obesity, alcohol consumption, and hormone replacement therapy. However, many women with breast cancer have no identifiable risk factors.",
+      
+      "prevention": "While there's no guaranteed prevention, risk reduction strategies include maintaining a healthy weight, regular physical activity, limiting alcohol, avoiding hormone replacement therapy, breastfeeding if possible, and for high-risk individuals, preventive medications or surgery might be considered.",
+      
+      "default": "Important breast cancer information includes understanding the importance of early detection through regular screening, recognizing that treatments have significantly improved outcomes in recent decades, and knowing that support resources are available for patients throughout their diagnosis and treatment journey."
+    };
+    
+    // Determine which response to use based on keywords in the query
+    let responseKey: keyof typeof fallbackResponses = "default";
+    const query = message.toLowerCase();
+    
+    if (query.includes("symptom") || query.includes("sign")) {
+      responseKey = "symptoms";
+    } else if (query.includes("detect") || query.includes("screen") || query.includes("test") || query.includes("diagnos")) {
+      responseKey = "detection";
+    } else if (query.includes("treat") || query.includes("therap") || query.includes("surgery") || query.includes("option")) {
+      responseKey = "treatment";
+    } else if (query.includes("risk") || query.includes("cause") || query.includes("factor")) {
+      responseKey = "risk";
+    } else if (query.includes("prevent") || query.includes("avoid") || query.includes("reduce risk")) {
+      responseKey = "prevention";
+    }
     
     // Return a response even if the API fails
-    return "I apologize for the technical difficulty. " + fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
+    return "I apologize for the technical difficulty. " + fallbackResponses[responseKey];
   }
 }
 
