@@ -3,17 +3,111 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/componen
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useChat } from "@/hooks/useChat";
-import { Send, Bot, User, RefreshCw, MessageSquare } from "lucide-react";
+import { Send, Bot, User, RefreshCw, MessageSquare, Mic, MicOff, Volume2 } from "lucide-react";
+
+// TypeScript declarations for Web Speech API
+declare global {
+  interface Window {
+    SpeechRecognition: any;
+    webkitSpeechRecognition: any;
+  }
+}
 
 export default function AIAssistantChat() {
   const { messages, isLoading, sendMessage } = useChat();
   const [input, setInput] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
+  const [isListening, setIsListening] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const recognitionRef = useRef<any>(null);
+  
   // Auto-scroll to bottom of messages
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+  
+  // Initialize speech recognition
+  useEffect(() => {
+    if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognitionRef.current = new SpeechRecognition();
+      recognitionRef.current.continuous = true;
+      recognitionRef.current.interimResults = true;
+      
+      recognitionRef.current.onresult = (event: any) => {
+        const transcript = Array.from(event.results)
+          .map((result: any) => result[0])
+          .map((result: any) => result.transcript)
+          .join('');
+        
+        setInput(transcript);
+      };
+      
+      recognitionRef.current.onend = () => {
+        if (isListening) {
+          recognitionRef.current?.start();
+        }
+      };
+    }
+    
+    return () => {
+      recognitionRef.current?.stop();
+    };
+  }, [isListening]);
+
+  const toggleListening = () => {
+    if (isListening) {
+      recognitionRef.current?.stop();
+      setIsListening(false);
+      
+      // If there's input after stopping, submit it
+      if (input.trim()) {
+        sendMessage(input);
+        setInput("");
+      }
+    } else {
+      try {
+        recognitionRef.current?.start();
+        setIsListening(true);
+      } catch (error) {
+        console.error('Speech recognition error:', error);
+      }
+    }
+  };
+  
+  // Text-to-speech functionality
+  const speakMessage = (text: string) => {
+    if ('speechSynthesis' in window) {
+      // Cancel any ongoing speech
+      window.speechSynthesis.cancel();
+      
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.rate = 0.95; // Slightly slower than default
+      utterance.pitch = 1.0;
+      
+      // Use a female voice if available
+      const voices = window.speechSynthesis.getVoices();
+      const femaleVoice = voices.find(voice => voice.name.includes('Female') || voice.name.includes('female'));
+      if (femaleVoice) {
+        utterance.voice = femaleVoice;
+      }
+      
+      setIsSpeaking(true);
+      
+      utterance.onend = () => {
+        setIsSpeaking(false);
+      };
+      
+      window.speechSynthesis.speak(utterance);
+    }
+  };
+  
+  const stopSpeaking = () => {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -145,22 +239,73 @@ export default function AIAssistantChat() {
             {/* Chat input area */}
             <div className="p-6 border-t border-white/10">
               <form onSubmit={handleSubmit} className="flex items-center w-full">
-                <Input
-                  type="text"
-                  placeholder="Type your medical question here..."
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  className="flex-grow bg-black/30 border-white/10 text-gray-200 rounded-full py-3 px-5 focus-visible:ring-primary"
-                  disabled={isLoading}
-                />
+                <div className="relative flex-grow">
+                  <Input
+                    type="text"
+                    placeholder={isListening ? "Listening..." : "Type your medical question here..."}
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    className={`w-full bg-black/30 border-white/10 text-gray-200 rounded-full py-3 px-5 focus-visible:ring-primary ${isListening ? 'pr-12 border-primary' : ''}`}
+                    disabled={isLoading}
+                  />
+                  {isListening && (
+                    <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+                      <div className="flex space-x-1">
+                        <div className="bg-primary w-1 h-3 animate-pulse" style={{ animationDuration: '0.8s' }}></div>
+                        <div className="bg-primary w-1 h-4 animate-pulse" style={{ animationDuration: '1s' }}></div>
+                        <div className="bg-primary w-1 h-2 animate-pulse" style={{ animationDuration: '0.6s' }}></div>
+                        <div className="bg-primary w-1 h-3 animate-pulse" style={{ animationDuration: '0.7s' }}></div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+                
+                {/* Speech recognition button */}
+                <Button 
+                  type="button"
+                  className={`ml-2 ${isListening 
+                    ? 'bg-primary hover:bg-primary/90' 
+                    : 'bg-gray-700 hover:bg-gray-600'} text-white rounded-full p-3 aspect-square`}
+                  onClick={toggleListening}
+                  title={isListening ? "Stop listening" : "Start voice input"}
+                >
+                  {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+                </Button>
+                
+                {/* Send button */}
                 <Button 
                   type="submit" 
-                  className="ml-3 bg-gradient-to-r from-primary to-accent hover:opacity-90 text-white rounded-full p-3 aspect-square"
+                  className="ml-2 bg-gradient-to-r from-primary to-accent hover:opacity-90 text-white rounded-full p-3 aspect-square"
                   disabled={isLoading || !input.trim()}
                 >
                   <Send className="h-4 w-4" />
                 </Button>
               </form>
+              
+              {/* Voice controls for assistant messages */}
+              {messages.length > 0 && (
+                <div className="flex justify-center mt-3 space-x-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    className={`text-xs px-3 py-1 h-auto rounded-full ${isSpeaking ? 'bg-primary/20 text-primary' : 'bg-black/30 text-gray-400'}`}
+                    onClick={() => {
+                      const lastAssistantMessage = messages
+                        .filter(m => m.role === 'assistant')
+                        .pop();
+                      
+                      if (lastAssistantMessage) {
+                        isSpeaking ? stopSpeaking() : speakMessage(lastAssistantMessage.content);
+                      }
+                    }}
+                  >
+                    <Volume2 className="h-3 w-3 mr-1" />
+                    {isSpeaking ? "Stop speaking" : "Speak last response"}
+                  </Button>
+                </div>
+              )}
+              
               <p className="text-xs text-gray-500 mt-4 text-center">
                 For medical emergencies, please call emergency services or visit your nearest hospital.
               </p>

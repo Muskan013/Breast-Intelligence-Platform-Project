@@ -43,3 +43,28 @@ export const makePrediction = async (params: PredictionParams): Promise<Predicti
     throw new Error('Failed to generate breast cancer prediction');
   }
 };
+
+export const makePredictionFromFile = async (file: File): Promise<PredictionResult> => {
+  try {
+    // Create a FormData object to send the file
+    const formData = new FormData();
+    formData.append('file', file);
+
+    // Use fetch directly since apiRequest doesn't support FormData
+    const response = await fetch('/api/predict/file', {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.error || `Server error: ${response.status}`);
+    }
+
+    const data: PredictionResponse = await response.json();
+    return data.prediction;
+  } catch (error) {
+    console.error('Error making prediction from file:', error);
+    throw new Error('Failed to generate breast cancer prediction from uploaded file');
+  }
+};
