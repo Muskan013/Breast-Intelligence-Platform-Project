@@ -3,49 +3,51 @@
 @tailwind utilities;
 
 :root {
-      --background: 0 0% 100%;
---foreground: 20 14.3% 4.1%;
---muted: 60 4.8% 95.9%;
---muted-foreground: 25 5.3% 44.7%;
---popover: 0 0% 100%;
---popover-foreground: 20 14.3% 4.1%;
---card: 0 0% 100%;
---card-foreground: 20 14.3% 4.1%;
---border: 20 5.9% 90%;
---input: 20 5.9% 90%;
---primary: 207 90% 54%;
---primary-foreground: 211 100% 99%;
---secondary: 60 4.8% 95.9%;
---secondary-foreground: 24 9.8% 10%;
---accent: 60 4.8% 95.9%;
---accent-foreground: 24 9.8% 10%;
---destructive: 0 84.2% 60.2%;
---destructive-foreground: 60 9.1% 97.8%;
---ring: 20 14.3% 4.1%;
---radius: 0.5rem;
-  }
-  .dark {
-      --background: 240 10% 3.9%;
---foreground: 0 0% 98%;
---muted: 240 3.7% 15.9%;
---muted-foreground: 240 5% 64.9%;
---popover: 240 10% 3.9%;
---popover-foreground: 0 0% 98%;
---card: 240 10% 3.9%;
---card-foreground: 0 0% 98%;
---border: 240 3.7% 15.9%;
---input: 240 3.7% 15.9%;
---primary: 207 90% 54%;
---primary-foreground: 211 100% 99%;
---secondary: 240 3.7% 15.9%;
---secondary-foreground: 0 0% 98%;
---accent: 240 3.7% 15.9%;
---accent-foreground: 0 0% 98%;
---destructive: 0 62.8% 30.6%;
---destructive-foreground: 0 0% 98%;
---ring: 240 4.9% 83.9%;
---radius: 0.5rem;
-  }
+  /* Futuristic medical color palette */
+  --background: 220 33% 98%;
+  --foreground: 224 71% 4%;
+  --muted: 220 14% 96%;
+  --muted-foreground: 220 8% 46%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 224 71% 4%;
+  --card: 0 0% 100%;
+  --card-foreground: 224 71% 4%;
+  --border: 220 13% 91%;
+  --input: 220 13% 91%;
+  --primary: 196 100% 50%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 262 83% 58%;
+  --secondary-foreground: 210 40% 98%;
+  --accent: 170 78% 50%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 210 40% 98%;
+  --ring: 224 71% 4%;
+  --radius: 0.75rem;
+}
+
+.dark {
+  --background: 224 71% 4%;
+  --foreground: 213 31% 91%;
+  --muted: 223 47% 11%;
+  --muted-foreground: 215 20% 65%;
+  --popover: 224 71% 4%;
+  --popover-foreground: 215 20% 65%;
+  --card: 224 71% 4%;
+  --card-foreground: 213 31% 91%;
+  --border: 216 34% 17%;
+  --input: 216 34% 17%;
+  --primary: 196 100% 50%;
+  --primary-foreground: 222 47% 11%;
+  --secondary: 262 83% 58%;
+  --secondary-foreground: 210 40% 98%;
+  --accent: 170 78% 50%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 63% 31%;
+  --destructive-foreground: 210 40% 98%;
+  --ring: 216 34% 17%;
+  --radius: 0.75rem;
+}
 
 @layer base {
   * {
@@ -54,6 +56,86 @@
 
   body {
     @apply font-sans antialiased bg-background text-foreground;
+    background-image: 
+      radial-gradient(hsla(196, 100%, 50%, 0.1) 1px, transparent 1px),
+      radial-gradient(hsla(196, 100%, 50%, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+    background-position: 0 0, 25px 25px;
   }
+}
+
+/* Futuristic UI Elements */
+@layer components {
+  /* Glowing borders */
+  .glow-border {
+    box-shadow: 0 0 15px rgba(0, 217, 255, 0.5);
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .glow-border:hover {
+    box-shadow: 0 0 20px rgba(0, 217, 255, 0.7);
+  }
+  
+  /* Futuristic buttons */
+  .btn-futuristic {
+    @apply relative overflow-hidden bg-gradient-to-r from-primary to-accent text-white 
+            font-medium rounded-md px-4 py-2 transition-all duration-300;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+  }
+  
+  .btn-futuristic:before {
+    content: '';
+    @apply absolute inset-0 bg-white opacity-0 transition-opacity duration-300;
+  }
+  
+  .btn-futuristic:hover:before {
+    @apply opacity-20;
+  }
+  
+  /* Holographic cards */
+  .card-holographic {
+    @apply bg-white bg-opacity-90 backdrop-blur-sm;
+    box-shadow: 
+      0 5px 15px rgba(0, 0, 0, 0.1),
+      0 0 30px rgba(0, 217, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    position: relative;
+    transition: all 0.3s ease;
+  }
+  
+  .card-holographic:hover {
+    transform: translateY(-5px);
+    box-shadow: 
+      0 8px 25px rgba(0, 0, 0, 0.15),
+      0 0 40px rgba(0, 217, 255, 0.25);
+  }
+  
+  /* Futuristic sections */
+  .section-futuristic {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .section-futuristic:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    opacity: 0.7;
+  }
+}
+
+/* Futuristic animations */
+@keyframes pulse-glow {
+  0% { box-shadow: 0 0 5px rgba(0, 217, 255, 0.5); }
+  50% { box-shadow: 0 0 15px rgba(0, 217, 255, 0.7); }
+  100% { box-shadow: 0 0 5px rgba(0, 217, 255, 0.5); }
+}
+
+.pulse-animation {
+  animation: pulse-glow 3s infinite;
 }
 

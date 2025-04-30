@@ -2,7 +2,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Microscope, RotateCcw } from "lucide-react";
+import { Microscope, RotateCcw, Zap, Activity, BrainCircuit, ScanSearch } from "lucide-react";
 import { PredictionParams } from "@/lib/predictionModel";
 
 interface PredictionFormProps {
@@ -100,35 +100,63 @@ export default function PredictionForm({
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <form onSubmit={handleSubmit} className="card-holographic relative overflow-hidden p-5 bg-black/50 text-white rounded-xl backdrop-blur-md border border-white/10">
+      {/* Abstract background elements */}
+      <div className="absolute inset-0 overflow-hidden opacity-10 pointer-events-none">
+        <div className="absolute w-96 h-96 bg-primary rounded-full blur-[100px] -top-20 -right-20"></div>
+        <div className="absolute w-64 h-64 bg-accent rounded-full blur-[80px] bottom-0 left-20"></div>
+        <div className="bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNmMtMy4zMTQgMC02LTIuNjg2LTYtNnMyLjY4Ni02IDYtNiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utb3BhY2l0eT0iLjA1Ii8+PGNpcmNsZSBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9Ii4wNSIgY3g9IjQwIiBjeT0iMzAiIHI9IjEiLz48Y2lyY2xlIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iLjA1IiBjeD0iMjAiIGN5PSIyMCIgcj0iMSIvPjxjaXJjbGUgZmlsbD0iI2ZmZiIgZmlsbC1vcGFjaXR5PSIuMDUiIGN4PSI0MCIgY3k9IjQwIiByPSIxIi8+PC9nPjwvc3ZnPg==')] absolute inset-0 opacity-10"></div>
+      </div>
+      
+      {/* Header */}
+      <div className="mb-6 relative">
+        <div className="flex items-center mb-2">
+          <div className="w-1.5 h-7 bg-primary rounded-sm mr-3 animate-pulse"></div>
+          <h3 className="text-lg font-semibold bg-clip-text text-transparent bg-gradient-to-r from-primary via-white to-accent">
+            Diagnostic Parameter Configuration
+          </h3>
+        </div>
+        <p className="text-gray-400 ml-5 text-sm max-w-2xl">
+          Adjust biomarkers using advanced neural scanning technology to analyze cellular samples with quantum precision
+        </p>
+      </div>
+      
+      {/* Parameters Grid */}
+      <div className="relative grid grid-cols-1 md:grid-cols-2 gap-6">
         {Object.entries(parameterDefinitions).map(([key, def]) => {
           const paramKey = key as keyof PredictionParams;
           return (
-            <div key={key} className="parameter-input">
+            <div key={key} className="parameter-input backdrop-blur-sm bg-black/30 p-3 rounded-lg border border-white/5 hover:border-primary/30 transition-all duration-300 group">
               <div className="flex items-center mb-2">
-                <Label htmlFor={key} className="text-gray-700 font-medium">{def.label}</Label>
+                <div className="flex items-center">
+                  {key === "cellSize" && <BrainCircuit className="h-4 w-4 text-primary mr-2" />}
+                  {key === "cellShape" && <Activity className="h-4 w-4 text-accent mr-2" />}
+                  {key === "mitoses" && <Zap className="h-4 w-4 text-secondary mr-2" />}
+                  {!["cellSize", "cellShape", "mitoses"].includes(key) && <ScanSearch className="h-4 w-4 text-primary/80 mr-2" />}
+                  <Label htmlFor={key} className="text-gray-300 font-medium">{def.label}</Label>
+                </div>
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="text-gray-400 ml-1 cursor-help"
-                      >
-                        <circle cx="12" cy="12" r="10" />
-                        <path d="M12 16v-4" />
-                        <path d="M12 8h.01" />
-                      </svg>
+                      <div className="text-gray-400 ml-1.5 bg-white/5 rounded-full p-0.5 cursor-help hover:bg-white/10 transition-colors">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <circle cx="12" cy="12" r="10" />
+                          <path d="M12 16v-4" />
+                          <path d="M12 8h.01" />
+                        </svg>
+                      </div>
                     </TooltipTrigger>
-                    <TooltipContent>
+                    <TooltipContent className="bg-black/90 border-primary text-white backdrop-blur-md">
                       <p>{def.description}</p>
                     </TooltipContent>
                   </Tooltip>
@@ -145,31 +173,52 @@ export default function PredictionForm({
                   className="flex-grow"
                   disabled={isLoading}
                 />
-                <span className="font-mono text-gray-700 min-w-[3.5rem] text-right">
+                <span className="font-mono bg-black/50 backdrop-blur-sm border border-white/10 px-2 py-1 rounded text-primary min-w-[3.8rem] text-center group-hover:border-primary/30 transition-colors">
                   {def.format(params[paramKey])}
                 </span>
+              </div>
+              
+              {/* Progress tracker */}
+              <div className="mt-1.5 h-0.5 w-full bg-black/50 relative overflow-hidden rounded-full">
+                <div 
+                  className="h-full bg-gradient-to-r from-primary/50 to-primary absolute top-0 left-0 transition-all duration-300"
+                  style={{ 
+                    width: `${((params[paramKey] - def.min) / (def.max - def.min)) * 100}%`,
+                  }}
+                ></div>
               </div>
             </div>
           );
         })}
       </div>
 
+      {/* Action Buttons */}
       <div className="mt-8 flex items-center justify-between">
         <Button
           type="button"
           variant="outline"
           onClick={onReset}
-          className="text-gray-600 bg-gray-100 hover:bg-gray-200"
+          className="bg-black/50 backdrop-blur-sm border-white/20 text-gray-300 hover:bg-white/10 hover:text-white transition-all"
           disabled={isLoading}
         >
-          <RotateCcw className="mr-1 h-4 w-4" /> Reset
+          <RotateCcw className="mr-1.5 h-4 w-4" /> Reset Parameters
         </Button>
+        
         <Button
           type="submit"
-          className="bg-primary-500 hover:bg-primary-600 text-white"
+          className="btn-futuristic relative group"
           disabled={isLoading}
         >
-          <Microscope className="mr-2 h-4 w-4" /> Generate Prediction
+          {isLoading ? (
+            <span className="flex items-center">
+              <Activity className="mr-2 h-4 w-4 animate-pulse" /> Processing Sample...
+            </span>
+          ) : (
+            <span className="flex items-center relative overflow-hidden">
+              <Microscope className="mr-2 h-4 w-4" /> Analyze Specimen
+              <span className="absolute inset-0 w-full h-full bg-white/20 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></span>
+            </span>
+          )}
         </Button>
       </div>
     </form>
