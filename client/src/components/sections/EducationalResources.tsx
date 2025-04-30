@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { 
   ArrowRight, 
   Brain, 
-  NetworkIcon, 
+  Network, 
   BarChart4, 
   Layers, 
   Microchip,
@@ -404,7 +404,7 @@ export default function EducationalResources() {
                         : "bg-gray-900/50 border-white/5 text-gray-400 hover:bg-gray-800/50"
                     }`}
                   >
-                    <NetworkIcon className={`h-5 w-5 mb-1 ${activeTab === "architecture" ? "text-primary" : ""}`} />
+                    <Network className={`h-5 w-5 mb-1 ${activeTab === "architecture" ? "text-primary" : ""}`} />
                     <span className="text-xs">Architecture</span>
                   </Button>
                   
@@ -512,26 +512,26 @@ export default function EducationalResources() {
         </div>
         
         {/* Network architecture cards */}
-        <div className="mb-16">
-          <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
-            <NetworkIcon className="h-6 w-6 mr-2 text-primary" />
+        <div className="mb-8 sm:mb-12 md:mb-16">
+          <h3 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6 flex items-center">
+            <Network className="h-5 w-5 sm:h-6 sm:w-6 mr-2 text-primary" />
             Deep Learning Components
           </h3>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
             {architectureData.map((item, index) => (
               <div 
                 key={index}
-                className="card-holographic backdrop-blur-md bg-black/30 border border-white/10 rounded-xl p-6 group hover:bg-primary/5 transition-all duration-300"
+                className="card-holographic backdrop-blur-md bg-black/30 border border-white/10 rounded-xl p-3 sm:p-4 md:p-6 group hover:bg-primary/5 transition-all duration-300"
               >
-                <div className="flex items-center mb-4">
-                  <div className="bg-primary/10 rounded-lg p-2 mr-3">
+                <div className="flex items-center mb-2 sm:mb-3 md:mb-4">
+                  <div className="bg-primary/10 rounded-lg p-1.5 sm:p-2 mr-2 sm:mr-3">
                     {item.icon}
                   </div>
-                  <h4 className="text-white font-semibold">{item.title}</h4>
+                  <h4 className="text-white text-sm sm:text-base font-semibold">{item.title}</h4>
                 </div>
-                <p className="text-gray-400 text-sm mb-4">{item.description}</p>
-                <div className="bg-black/20 border border-white/5 rounded-lg p-3 text-xs text-gray-300">
+                <p className="text-gray-400 text-xs sm:text-sm mb-2 sm:mb-3 md:mb-4">{item.description}</p>
+                <div className="bg-black/20 border border-white/5 rounded-lg p-2 sm:p-3 text-xs text-gray-300">
                   {item.detail}
                 </div>
               </div>
@@ -541,34 +541,34 @@ export default function EducationalResources() {
         
         {/* Learning resources */}
         <div>
-          <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
-            <FileCode className="h-6 w-6 mr-2 text-primary" />
+          <h3 className="text-xl sm:text-2xl font-bold text-white mb-4 sm:mb-6 flex items-center">
+            <FileCode className="h-5 w-5 sm:h-6 sm:w-6 mr-2 text-primary" />
             Neural Network Learning Resources
           </h3>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4 md:gap-6 lg:gap-8">
             {tutorials.map((tutorial, index) => (
               <div 
                 key={index}
-                className="flex bg-black/30 backdrop-blur-sm border border-white/10 rounded-xl overflow-hidden group hover:bg-black/40 transition-all duration-300"
+                className="flex flex-col sm:flex-row bg-black/30 backdrop-blur-sm border border-white/10 rounded-xl overflow-hidden group hover:bg-black/40 transition-all duration-300"
               >
-                <div className="w-1/4 bg-gradient-to-br from-primary/20 to-accent/10 flex items-center justify-center p-4">
-                  {tutorial.icon}
+                <div className="w-full sm:w-1/4 bg-gradient-to-br from-primary/20 to-accent/10 flex items-center justify-center p-3 sm:p-4">
+                  <div className="h-10 w-10 sm:h-auto sm:w-auto">{tutorial.icon}</div>
                 </div>
-                <div className="w-3/4 p-5">
-                  <div className="flex items-center justify-between mb-2">
-                    <h4 className="text-white font-medium">{tutorial.title}</h4>
-                    <Badge className="bg-primary/20 text-primary border-none">
+                <div className="w-full sm:w-3/4 p-3 sm:p-4 md:p-5">
+                  <div className="flex flex-wrap items-center justify-between mb-2 gap-2">
+                    <h4 className="text-white text-sm sm:text-base font-medium">{tutorial.title}</h4>
+                    <Badge className="bg-primary/20 text-primary border-none text-xs">
                       {tutorial.level}
                     </Badge>
                   </div>
-                  <p className="text-gray-400 text-sm mb-3">{tutorial.description}</p>
+                  <p className="text-gray-400 text-xs sm:text-sm mb-2 sm:mb-3">{tutorial.description}</p>
                   <div className="flex justify-between items-center">
                     <div className="text-gray-500 text-xs flex items-center">
                       <Clock className="h-3 w-3 mr-1" />
                       {tutorial.duration}
                     </div>
-                    <Button variant="link" className="p-0 h-auto text-primary group-hover:text-white group-hover:underline">
+                    <Button variant="link" className="p-0 h-auto text-primary text-xs sm:text-sm group-hover:text-white group-hover:underline">
                       View Tutorial
                     </Button>
                   </div>
@@ -577,10 +577,10 @@ export default function EducationalResources() {
             ))}
           </div>
           
-          <div className="mt-8 text-center">
+          <div className="mt-6 sm:mt-8 text-center">
             <Link href="/blog">
-              <Button className="btn-futuristic">
-                Explore All Neural Network Articles <ArrowRight className="ml-2 h-4 w-4" />
+              <Button className="btn-futuristic text-xs sm:text-sm py-1.5 sm:py-2 px-3 sm:px-4">
+                Explore All Neural Network Articles <ArrowRight className="ml-1 sm:ml-2 h-3 w-3 sm:h-4 sm:w-4" />
               </Button>
             </Link>
           </div>
