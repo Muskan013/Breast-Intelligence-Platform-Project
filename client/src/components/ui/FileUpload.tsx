@@ -116,7 +116,7 @@ export default function FileUpload({
     <div className={cn("w-full", className)}>
       {!uploadedFile ? (
         <div
-          className={`relative flex flex-col items-center justify-center h-40 border-2 border-dashed rounded-lg transition-all duration-300 ${
+          className={`relative flex flex-col items-center justify-center h-32 sm:h-40 border-2 border-dashed rounded-lg transition-all duration-300 ${
             dragActive 
               ? 'border-primary/80 bg-primary/5' 
               : 'border-white/10 bg-black/30 hover:border-white/30'
@@ -135,21 +135,21 @@ export default function FileUpload({
             disabled={isLoading}
           />
           
-          <div className="flex flex-col items-center gap-2 p-4 text-center">
-            <div className="p-3 rounded-full bg-black/40 text-primary border border-primary/20 backdrop-blur-sm">
-              <Upload className="h-6 w-6" />
+          <div className="flex flex-col items-center gap-1.5 sm:gap-2 p-3 sm:p-4 text-center">
+            <div className="p-2 sm:p-3 rounded-full bg-black/40 text-primary border border-primary/20 backdrop-blur-sm">
+              <Upload className="h-5 w-5 sm:h-6 sm:w-6" />
             </div>
-            <p className="text-gray-300 font-medium">Drag & drop file here or</p>
+            <p className="text-gray-300 text-sm sm:text-base font-medium">Drag & drop file here or</p>
             <Button 
               type="button" 
               variant="outline" 
               onClick={handleButtonClick}
-              className="text-sm bg-black/50 border-white/20 hover:bg-primary/10 hover:text-white hover:border-primary/40"
+              className="text-xs sm:text-sm py-1 h-auto bg-black/50 border-white/20 hover:bg-primary/10 hover:text-white hover:border-primary/40"
               disabled={isLoading}
             >
               Browse Files
             </Button>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-gray-500 mt-0.5 sm:mt-1 px-2">
               {acceptedTypes.includes('image/*') 
                 ? 'Medical images (JPEG, PNG, DICOM)'
                 : acceptedTypes.join(', ')} 
@@ -158,10 +158,10 @@ export default function FileUpload({
           </div>
         </div>
       ) : (
-        <div className="relative p-4 border border-white/10 rounded-lg bg-black/30 backdrop-blur-sm">
+        <div className="relative p-3 sm:p-4 border border-white/10 rounded-lg bg-black/30 backdrop-blur-sm">
           <div className="flex items-center">
             {uploadedFile.type.startsWith('image/') ? (
-              <div className="flex-shrink-0 h-16 w-16 mr-4">
+              <div className="flex-shrink-0 h-12 w-12 sm:h-16 sm:w-16 mr-3 sm:mr-4">
                 <img 
                   src={URL.createObjectURL(uploadedFile)} 
                   alt="Preview" 
@@ -169,22 +169,22 @@ export default function FileUpload({
                 />
               </div>
             ) : (
-              <div className="flex-shrink-0 h-16 w-16 mr-4 bg-black/40 rounded-lg flex items-center justify-center">
+              <div className="flex-shrink-0 h-12 w-12 sm:h-16 sm:w-16 mr-3 sm:mr-4 bg-black/40 rounded-lg flex items-center justify-center">
                 {uploadedFile.name.endsWith('.csv') || uploadedFile.type === 'text/csv' ? (
-                  <FileText className="h-8 w-8 text-blue-400" />
+                  <FileText className="h-6 w-6 sm:h-8 sm:w-8 text-blue-400" />
                 ) : uploadedFile.name.endsWith('.json') || uploadedFile.type === 'application/json' ? (
-                  <FileText className="h-8 w-8 text-amber-400" />
+                  <FileText className="h-6 w-6 sm:h-8 sm:w-8 text-amber-400" />
                 ) : (
-                  <FileScan className="h-8 w-8 text-gray-400" />
+                  <FileScan className="h-6 w-6 sm:h-8 sm:w-8 text-gray-400" />
                 )}
               </div>
             )}
             
-            <div className="flex-grow">
+            <div className="flex-grow min-w-0">
               <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-white font-medium truncate max-w-xs">{uploadedFile.name}</p>
-                  <p className="text-gray-400 text-xs">
+                <div className="min-w-0 pr-2">
+                  <p className="text-white text-sm sm:text-base font-medium truncate">{uploadedFile.name}</p>
+                  <p className="text-gray-400 text-xs truncate">
                     {(uploadedFile.size / (1024 * 1024)).toFixed(2)} MB - {uploadedFile.type || 'Unknown type'}
                   </p>
                 </div>
@@ -194,19 +194,19 @@ export default function FileUpload({
                     variant="ghost"
                     size="icon"
                     onClick={onClearFile}
-                    className="h-8 w-8 text-gray-400 hover:text-white hover:bg-red-500/10"
+                    className="h-7 w-7 sm:h-8 sm:w-8 text-gray-400 hover:text-white hover:bg-red-500/10"
                     disabled={isLoading}
                   >
-                    <X className="h-4 w-4" />
+                    <X className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                   </Button>
                 </div>
               </div>
               
-              <div className="mt-2 flex items-center">
+              <div className="mt-1.5 sm:mt-2 flex items-center">
                 <div className="h-1 flex-grow bg-black/50 rounded-full overflow-hidden">
                   <div className="h-full bg-gradient-to-r from-primary to-accent w-full"></div>
                 </div>
-                <Check className="ml-2 h-4 w-4 text-green-500" />
+                <Check className="ml-2 h-3.5 w-3.5 sm:h-4 sm:w-4 text-green-500" />
               </div>
             </div>
           </div>
@@ -214,9 +214,9 @@ export default function FileUpload({
       )}
       
       {error && (
-        <div className="mt-2 text-red-500 text-sm flex items-center gap-1.5">
-          <AlertCircle className="h-4 w-4" />
-          <span>{error}</span>
+        <div className="mt-1.5 sm:mt-2 text-red-500 text-xs sm:text-sm flex items-center gap-1">
+          <AlertCircle className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
+          <span className="line-clamp-2">{error}</span>
         </div>
       )}
     </div>
