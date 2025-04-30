@@ -139,3 +139,11 @@
   animation: pulse-glow 3s infinite;
 }
 
+@keyframes progressLoader {
+  0% { width: 0%; }
+  50% { width: 70%; }
+  75% { width: 85%; }
+  90% { width: 95%; }
+  100% { width: 100%; }
+}
+
