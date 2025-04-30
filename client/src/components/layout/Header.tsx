@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { Activity, Zap, Database, HeartPulse } from "lucide-react";
+import { Activity, Zap, Database, HeartPulse, BookOpen } from "lucide-react";
 
 export default function Header() {
   return (
@@ -53,6 +53,14 @@ export default function Header() {
                 </div>
                 <span>Assistant</span>
               </a>
+            </li>
+            <li>
+              <Link href="/blog">
+                <a className="hover:bg-primary/20 px-3 py-1.5 rounded-full transition-colors font-medium flex items-center">
+                  <BookOpen className="h-4 w-4 mr-1.5" />
+                  <span>Blog</span>
+                </a>
+              </Link>
             </li>
           </ul>
         </nav>

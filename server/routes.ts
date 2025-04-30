@@ -131,31 +131,25 @@ async function predictBreastCancer(params: PredictionParams): Promise<Prediction
 // Function to generate AI assistant response using Gemini
 async function generateAIResponse(message: string): Promise<string> {
   try {
-    // Get the generative model (Gemini Pro)
-    const model = geminiAI.getGenerativeModel({ model: "gemini-pro" });
-
-    // Set up the chat
-    const chat = model.startChat({
-      generationConfig: {
-        maxOutputTokens: 500,
-      },
-      history: [
-        {
-          role: "user",
-          parts: [{ text: "I will be asking you questions about breast cancer. Please provide accurate, evidence-based information." }],
-        },
-        {
-          role: "model",
-          parts: [{ text: "I'll help you with breast cancer information. I'll provide evidence-based details about detection, diagnosis, and treatment options in a clear, empathetic way. My responses will be informative and accessible. Remember that I can't provide personal medical advice or diagnoses - please consult healthcare professionals for specific concerns. How can I help you today?" }],
-        },
-      ],
-    });
-
-    // Generate the response
-    const result = await chat.sendMessage(message);
+    // Use direct generation API instead of chat API for better compatibility
+    const model = geminiAI.getGenerativeModel({ model: "gemini-1.0-pro" });
+    
+    // Create medical context prompt with the user's query
+    const prompt = `
+    You are a medical AI assistant specializing in breast cancer. 
+    Provide accurate, evidence-based information about breast cancer detection, diagnosis, and treatment options.
+    Keep your responses clear, empathetic, and informative.
+    Include relevant medical information but make it accessible to patients.
+    Do not provide personal medical advice or diagnoses, and remind users to consult healthcare professionals for medical concerns.
+    
+    USER QUERY: ${message}
+    `;
+    
+    // Generate content with the prompt
+    const result = await model.generateContent(prompt);
     const response = await result.response;
     const text = response.text();
-
+    
     return text || "I'm sorry, I couldn't generate a response. Please try again.";
   } catch (error) {
     console.error("Error generating AI response with Gemini:", error);
