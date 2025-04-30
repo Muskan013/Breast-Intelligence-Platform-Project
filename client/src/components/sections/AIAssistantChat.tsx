@@ -313,42 +313,172 @@ export default function AIAssistantChat() {
           </div>
           
           {/* Example questions */}
-          <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
-            <button 
-              onClick={() => {
-                if (!isLoading) {
-                  setInput("What are the early symptoms of breast cancer?");
-                  sendMessage("What are the early symptoms of breast cancer?");
-                }
-              }}
-              className="bg-black/20 backdrop-blur-sm border border-white/10 hover:bg-primary/10 rounded-lg p-4 text-left text-gray-300 text-sm transition-colors"
-            >
-              <span className="text-primary">Ask:</span> What are the early symptoms of breast cancer?
-            </button>
+          <div className="my-8">
+            <h3 className="text-white text-lg mb-4 font-medium text-center">Common Questions About Breast Cancer</h3>
             
-            <button 
-              onClick={() => {
-                if (!isLoading) {
-                  setInput("How effective are mammograms for early detection?");
-                  sendMessage("How effective are mammograms for early detection?");
-                }
-              }}
-              className="bg-black/20 backdrop-blur-sm border border-white/10 hover:bg-primary/10 rounded-lg p-4 text-left text-gray-300 text-sm transition-colors"
-            >
-              <span className="text-primary">Ask:</span> How effective are mammograms for early detection?
-            </button>
-            
-            <button 
-              onClick={() => {
-                if (!isLoading) {
-                  setInput("What are the latest treatment options?");
-                  sendMessage("What are the latest treatment options?");
-                }
-              }}
-              className="bg-black/20 backdrop-blur-sm border border-white/10 hover:bg-primary/10 rounded-lg p-4 text-left text-gray-300 text-sm transition-colors"
-            >
-              <span className="text-primary">Ask:</span> What are the latest treatment options?
-            </button>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {/* Category: Symptoms */}
+              <div>
+                <h4 className="text-primary mb-3 text-sm font-medium">Symptoms & Detection</h4>
+                <div className="space-y-2">
+                  <button 
+                    onClick={() => {
+                      if (!isLoading) {
+                        setInput("What are the early symptoms of breast cancer?");
+                        sendMessage("What are the early symptoms of breast cancer?");
+                      }
+                    }}
+                    className="w-full bg-black/20 backdrop-blur-sm border border-white/10 hover:bg-primary/10 rounded-lg p-3 text-left text-gray-300 text-sm transition-colors"
+                  >
+                    <span className="text-primary mr-1 opacity-70">•</span> Early symptoms of breast cancer
+                  </button>
+                  
+                  <button 
+                    onClick={() => {
+                      if (!isLoading) {
+                        setInput("How effective are mammograms for early detection?");
+                        sendMessage("How effective are mammograms for early detection?");
+                      }
+                    }}
+                    className="w-full bg-black/20 backdrop-blur-sm border border-white/10 hover:bg-primary/10 rounded-lg p-3 text-left text-gray-300 text-sm transition-colors"
+                  >
+                    <span className="text-primary mr-1 opacity-70">•</span> Effectiveness of mammograms
+                  </button>
+                  
+                  <button 
+                    onClick={() => {
+                      if (!isLoading) {
+                        setInput("When should I start getting breast cancer screenings?");
+                        sendMessage("When should I start getting breast cancer screenings?");
+                      }
+                    }}
+                    className="w-full bg-black/20 backdrop-blur-sm border border-white/10 hover:bg-primary/10 rounded-lg p-3 text-left text-gray-300 text-sm transition-colors"
+                  >
+                    <span className="text-primary mr-1 opacity-70">•</span> When to start breast cancer screenings
+                  </button>
+                  
+                  <button 
+                    onClick={() => {
+                      if (!isLoading) {
+                        setInput("How do you perform a breast self-examination?");
+                        sendMessage("How do you perform a breast self-examination?");
+                      }
+                    }}
+                    className="w-full bg-black/20 backdrop-blur-sm border border-white/10 hover:bg-primary/10 rounded-lg p-3 text-left text-gray-300 text-sm transition-colors"
+                  >
+                    <span className="text-primary mr-1 opacity-70">•</span> Breast self-examination guide
+                  </button>
+                </div>
+              </div>
+              
+              {/* Category: Risk & Prevention */}
+              <div>
+                <h4 className="text-primary mb-3 text-sm font-medium">Risk & Prevention</h4>
+                <div className="space-y-2">
+                  <button 
+                    onClick={() => {
+                      if (!isLoading) {
+                        setInput("What are the risk factors for breast cancer?");
+                        sendMessage("What are the risk factors for breast cancer?");
+                      }
+                    }}
+                    className="w-full bg-black/20 backdrop-blur-sm border border-white/10 hover:bg-primary/10 rounded-lg p-3 text-left text-gray-300 text-sm transition-colors"
+                  >
+                    <span className="text-primary mr-1 opacity-70">•</span> Breast cancer risk factors
+                  </button>
+                  
+                  <button 
+                    onClick={() => {
+                      if (!isLoading) {
+                        setInput("Does family history increase breast cancer risk?");
+                        sendMessage("Does family history increase breast cancer risk?");
+                      }
+                    }}
+                    className="w-full bg-black/20 backdrop-blur-sm border border-white/10 hover:bg-primary/10 rounded-lg p-3 text-left text-gray-300 text-sm transition-colors"
+                  >
+                    <span className="text-primary mr-1 opacity-70">•</span> Family history and genetic risk
+                  </button>
+                  
+                  <button 
+                    onClick={() => {
+                      if (!isLoading) {
+                        setInput("How can I reduce my risk of breast cancer?");
+                        sendMessage("How can I reduce my risk of breast cancer?");
+                      }
+                    }}
+                    className="w-full bg-black/20 backdrop-blur-sm border border-white/10 hover:bg-primary/10 rounded-lg p-3 text-left text-gray-300 text-sm transition-colors"
+                  >
+                    <span className="text-primary mr-1 opacity-70">•</span> Ways to reduce breast cancer risk
+                  </button>
+                  
+                  <button 
+                    onClick={() => {
+                      if (!isLoading) {
+                        setInput("Should I get genetic testing for breast cancer?");
+                        sendMessage("Should I get genetic testing for breast cancer?");
+                      }
+                    }}
+                    className="w-full bg-black/20 backdrop-blur-sm border border-white/10 hover:bg-primary/10 rounded-lg p-3 text-left text-gray-300 text-sm transition-colors"
+                  >
+                    <span className="text-primary mr-1 opacity-70">•</span> Genetic testing considerations
+                  </button>
+                </div>
+              </div>
+              
+              {/* Category: Treatment & Research */}
+              <div>
+                <h4 className="text-primary mb-3 text-sm font-medium">Treatment & Research</h4>
+                <div className="space-y-2">
+                  <button 
+                    onClick={() => {
+                      if (!isLoading) {
+                        setInput("What are the latest treatment options for breast cancer?");
+                        sendMessage("What are the latest treatment options for breast cancer?");
+                      }
+                    }}
+                    className="w-full bg-black/20 backdrop-blur-sm border border-white/10 hover:bg-primary/10 rounded-lg p-3 text-left text-gray-300 text-sm transition-colors"
+                  >
+                    <span className="text-primary mr-1 opacity-70">•</span> Latest breast cancer treatments
+                  </button>
+                  
+                  <button 
+                    onClick={() => {
+                      if (!isLoading) {
+                        setInput("What's the difference between lumpectomy and mastectomy?");
+                        sendMessage("What's the difference between lumpectomy and mastectomy?");
+                      }
+                    }}
+                    className="w-full bg-black/20 backdrop-blur-sm border border-white/10 hover:bg-primary/10 rounded-lg p-3 text-left text-gray-300 text-sm transition-colors"
+                  >
+                    <span className="text-primary mr-1 opacity-70">•</span> Lumpectomy vs. mastectomy
+                  </button>
+                  
+                  <button 
+                    onClick={() => {
+                      if (!isLoading) {
+                        setInput("What are the side effects of breast cancer treatments?");
+                        sendMessage("What are the side effects of breast cancer treatments?");
+                      }
+                    }}
+                    className="w-full bg-black/20 backdrop-blur-sm border border-white/10 hover:bg-primary/10 rounded-lg p-3 text-left text-gray-300 text-sm transition-colors"
+                  >
+                    <span className="text-primary mr-1 opacity-70">•</span> Treatment side effects
+                  </button>
+                  
+                  <button 
+                    onClick={() => {
+                      if (!isLoading) {
+                        setInput("What is the survival rate for breast cancer?");
+                        sendMessage("What is the survival rate for breast cancer?");
+                      }
+                    }}
+                    className="w-full bg-black/20 backdrop-blur-sm border border-white/10 hover:bg-primary/10 rounded-lg p-3 text-left text-gray-300 text-sm transition-colors"
+                  >
+                    <span className="text-primary mr-1 opacity-70">•</span> Breast cancer survival rates
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
