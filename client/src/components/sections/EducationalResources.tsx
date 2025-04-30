@@ -124,33 +124,33 @@ export default function EducationalResources() {
   ];
 
   return (
-    <section id="resources" className="section-futuristic relative py-20 overflow-hidden bg-gray-950">
+    <section id="resources" className="section-futuristic relative py-12 sm:py-16 md:py-20 overflow-hidden bg-gray-950">
       {/* Background elements */}
       <div className="absolute inset-0 overflow-hidden opacity-30 pointer-events-none">
-        <div className="absolute w-[800px] h-[800px] bg-primary/20 rounded-full blur-[150px] -top-40 right-20"></div>
-        <div className="absolute w-[600px] h-[600px] bg-secondary/20 rounded-full blur-[100px] bottom-20 -left-20"></div>
+        <div className="absolute w-[300px] sm:w-[500px] md:w-[800px] h-[300px] sm:h-[500px] md:h-[800px] bg-primary/20 rounded-full blur-[80px] sm:blur-[100px] md:blur-[150px] -top-40 right-20"></div>
+        <div className="absolute w-[300px] sm:w-[400px] md:w-[600px] h-[300px] sm:h-[400px] md:h-[600px] bg-secondary/20 rounded-full blur-[60px] sm:blur-[80px] md:blur-[100px] bottom-20 -left-20"></div>
         <div className="bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNmMtMy4zMTQgMC02LTIuNjg2LTYtNnMyLjY4Ni02IDYtNiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utb3BhY2l0eT0iLjA1Ii8+PGNpcmNsZSBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9Ii4wNSIgY3g9IjQwIiBjeT0iMzAiIHI9IjEiLz48Y2lyY2xlIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iLjA1IiBjeD0iMjAiIGN5PSIyMCIgcj0iMSIvPjxjaXJjbGUgZmlsbD0iI2ZmZiIgZmlsbC1vcGFjaXR5PSIuMDUiIGN4PSI0MCIgY3k9IjQwIiByPSIxIi8+PC9nPjwvc3ZnPg==')] absolute inset-0 opacity-10"></div>
       </div>
       
-      <div className="container mx-auto px-4 relative">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center mb-4 px-3 py-1 rounded-full text-primary bg-primary/10 backdrop-blur-sm border border-primary/20">
-            <Brain className="h-4 w-4 mr-2" />
-            <span className="text-sm font-medium">Neural Networks Analysis</span>
+      <div className="container mx-auto px-3 sm:px-4 relative">
+        <div className="text-center mb-8 sm:mb-12 md:mb-16">
+          <div className="inline-flex items-center mb-3 sm:mb-4 px-3 py-1 rounded-full text-primary bg-primary/10 backdrop-blur-sm border border-primary/20">
+            <Brain className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-2" />
+            <span className="text-xs sm:text-sm font-medium">Neural Networks Analysis</span>
           </div>
-          <h2 className="text-4xl font-bold text-white mb-5 bg-clip-text text-transparent bg-gradient-to-r from-white via-primary to-white">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 sm:mb-5 bg-clip-text text-transparent bg-gradient-to-r from-white via-primary to-white">
             Advanced AI Architecture Explorer
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+          <p className="text-gray-400 max-w-2xl mx-auto text-sm sm:text-base md:text-lg px-2">
             Interactive analysis of the neural network architectures powering our breast cancer detection systems
           </p>
         </div>
         
         {/* Neural network visualization section */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 items-start mb-8 sm:mb-12 md:mb-16">
           {/* Left panel - NN visualization */}
           <div className="lg:col-span-2">
-            <div className="backdrop-blur-md bg-black/40 rounded-xl overflow-hidden border border-white/10 relative h-[400px]">
+            <div className="backdrop-blur-md bg-black/40 rounded-xl overflow-hidden border border-white/10 relative h-[300px] sm:h-[350px] md:h-[400px]">
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-accent to-secondary"></div>
               
               {/* Neural network visualization */}
