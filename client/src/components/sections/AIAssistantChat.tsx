@@ -43,10 +43,10 @@ export default function AIAssistantChat() {
             <span className="text-sm font-medium">AI Medical Consultation</span>
           </div>
           <h2 className="text-4xl font-bold text-white mb-5 bg-clip-text text-transparent bg-gradient-to-r from-white via-primary to-white">
-            Gemini AI Medical Assistant
+            BreastCare Predict Medical Assistant
           </h2>
           <p className="text-gray-400 max-w-2xl mx-auto text-lg">
-            Get answers to your medical questions from our Gemini-powered assistant
+            Advanced AI-powered medical assistant for healthcare professionals
           </p>
         </div>
 
@@ -62,8 +62,8 @@ export default function AIAssistantChat() {
                   <Bot className="h-5 w-5 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-white text-lg font-medium">Gemini Medical Assistant</h3>
-                  <p className="text-gray-400 text-sm">Powered by advanced neural networks</p>
+                  <h3 className="text-white text-lg font-medium">BreastCare Predict Assistant</h3>
+                  <p className="text-gray-400 text-sm">Powered by multi-provider AI technology</p>
                 </div>
               </div>
               <Button 
@@ -85,7 +85,7 @@ export default function AIAssistantChat() {
                   </div>
                   <div className="bg-black/40 backdrop-blur-md p-4 rounded-lg border border-white/10 max-w-[80%] text-gray-200">
                     <p>
-                      Hello! I'm your Gemini-powered medical assistant. I can answer questions about breast cancer detection, diagnosis, and treatment options. How can I help you today?
+                      Hello! I'm your BreastCare Predict medical assistant. I can answer questions about breast cancer detection, diagnosis, and treatment options based on the latest medical research. How can I help you today?
                     </p>
                     <div className="flex items-center mt-2 text-xs text-gray-400">
                       <span>{formatTime(new Date().toISOString())}</span>

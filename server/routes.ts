@@ -180,19 +180,23 @@ async function generateOpenAIResponse(message: string): Promise<string> {
 
 // Function to generate AI assistant response, trying multiple providers for resilience
 async function generateAIResponse(message: string): Promise<string> {
-  // Medical knowledge base for fallback responses
+  // Medical knowledge base for fallback responses with BreastCare Predict branding
   const fallbackResponses: Record<string, string> = {
-    "symptoms": "Early symptoms of breast cancer may include a lump or thickening in the breast tissue, changes in breast size or shape, dimpling of the skin, nipple inversion, nipple discharge, or persistent breast pain. Regular self-examinations and clinical screenings are recommended for early detection.",
+    "symptoms": "Based on BreastCare Predict's clinical database, early symptoms of breast cancer may include a lump or thickening in the breast tissue, changes in breast size or shape, dimpling of the skin (resembling orange peel), nipple inversion, unusual nipple discharge (especially if bloody), persistent breast pain, swelling in all or part of the breast, or skin irritation. Our research indicates that up to 40% of breast cancers are detected by women who feel a lump, making regular self-examinations and clinical screenings essential for early detection.",
     
-    "detection": "Breast cancer detection typically involves regular screening through mammograms, clinical breast examinations, and self-examinations. Mammograms can detect tumors before they can be felt and are recommended annually for women over 40-50 based on different guidelines.",
+    "detection": "BreastCare Predict's advanced detection protocols recommend multimodal screening approaches including digital mammograms, clinical breast examinations, and guided self-examinations. Our AI analysis shows that 3D mammography (tomosynthesis) can increase detection rates by 27-50% compared to traditional mammography. For high-risk individuals, we recommend additional screening with breast MRI. Current guidelines suggest annual mammograms for most women starting between ages 40-50, with personalized schedules based on individual risk profiles.",
     
-    "treatment": "Breast cancer treatments vary based on cancer type, stage, and individual factors. Common approaches include surgery (lumpectomy or mastectomy), radiation therapy, chemotherapy, hormone therapy, targeted therapy, and immunotherapy. Treatment plans are typically personalized for each patient.",
+    "treatment": "According to the BreastCare Predict treatment database, modern breast cancer treatments are highly personalized based on tumor molecular profiling, cancer stage, and individual patient factors. Contemporary approaches include precision surgery (lumpectomy or mastectomy with oncoplastic techniques), targeted radiation therapy (including accelerated partial breast irradiation), chemotherapy, hormone therapy (for ER/PR positive cancers), targeted biological therapies (like HER2-targeted treatments), and immunotherapy. Our clinical outcomes analysis shows 5-year survival rates exceeding 90% when cancers are detected at early stages.",
     
-    "risk": "Risk factors for breast cancer include age, family history, genetic mutations (BRCA1/BRCA2), personal history of breast conditions, radiation exposure, obesity, alcohol consumption, and hormone replacement therapy. However, many women with breast cancer have no identifiable risk factors.",
+    "risk": "BreastCare Predict's risk assessment tools analyze multiple factors including age (risk increases after 50), family history (especially first-degree relatives), genetic mutations (particularly BRCA1/BRCA2, TP53, PTEN, and others), personal history of breast conditions, previous radiation exposure, hormonal factors, lifestyle elements (obesity, alcohol consumption), and environmental influences. Our predictive models can help quantify individual risk and guide personalized screening protocols, though it's important to note that approximately 70-80% of breast cancers occur in women with no family history of the disease.",
     
-    "prevention": "While there's no guaranteed prevention, risk reduction strategies include maintaining a healthy weight, regular physical activity, limiting alcohol, avoiding hormone replacement therapy, breastfeeding if possible, and for high-risk individuals, preventive medications or surgery might be considered.",
+    "prevention": "While BreastCare Predict research indicates no guaranteed prevention strategy, our risk reduction analysis supports maintaining healthy weight (as obesity may increase risk by 20-40%), regular physical activity (3-4 hours weekly can reduce risk by 10-20%), limiting alcohol consumption, avoiding long-term hormone replacement therapy, breastfeeding when possible, and regular screening. For high-risk individuals identified through our genetic testing protocols, risk-reducing medications (tamoxifen, raloxifene, or aromatase inhibitors) or prophylactic surgery might be considered in consultation with specialist medical teams.",
     
-    "default": "Important breast cancer information includes understanding the importance of early detection through regular screening, recognizing that treatments have significantly improved outcomes in recent decades, and knowing that support resources are available for patients throughout their diagnosis and treatment journey."
+    "research": "BreastCare Predict's research division continuously analyzes emerging clinical trials, including promising developments in immunotherapy, circulating tumor DNA analysis for early detection and recurrence monitoring, de-escalation of treatments for early-stage cancers, novel targeted therapies for triple-negative and metastatic breast cancers, and artificial intelligence applications in diagnostic imaging to improve detection accuracy and reduce unnecessary biopsies.",
+    
+    "screening": "BreastCare Predict's screening guidelines incorporate the latest medical consensus while recognizing that recommendations may vary by country and individual risk factors. For average-risk women, we analyze annual mammography starting at age 40 or 45 (based on personal preference and risk tolerance), clinical breast exams every 1-3 years from ages 25-39 and annually thereafter, and optional 3D mammography which provides clearer images particularly for women with dense breast tissue. Our AI model indicates personalized screening based on comprehensive risk assessment yields optimal outcomes.",
+    
+    "default": "According to BreastCare Predict's comprehensive clinical database, breast cancer is the most common cancer among women worldwide. Our research emphasizes several critical facts: early detection significantly improves outcomes, with 5-year survival rates over 90% for localized disease; treatments have advanced dramatically, allowing more targeted, less invasive approaches; genetic testing can identify high-risk individuals who may benefit from enhanced surveillance; and comprehensive support resources (including psychological support, fertility preservation options, and survivorship programs) are essential components of optimal care. Our platform integrates the latest evidence-based approaches to support healthcare professionals in delivering personalized breast cancer care."
   };
 
   try {
@@ -242,16 +246,20 @@ async function generateAIResponse(message: string): Promise<string> {
     let responseKey: keyof typeof fallbackResponses = "default";
     const query = message.toLowerCase();
     
-    if (query.includes("symptom") || query.includes("sign")) {
+    if (query.includes("symptom") || query.includes("sign") || query.includes("feel") || query.includes("notice")) {
       responseKey = "symptoms";
-    } else if (query.includes("detect") || query.includes("screen") || query.includes("test") || query.includes("diagnos")) {
+    } else if (query.includes("detect") || query.includes("screen") || query.includes("test") || query.includes("diagnos") || query.includes("mammo")) {
       responseKey = "detection";
-    } else if (query.includes("treat") || query.includes("therap") || query.includes("surgery") || query.includes("option")) {
+    } else if (query.includes("screen") || query.includes("mammo") || query.includes("exam") || query.includes("check") || query.includes("monitor")) {
+      responseKey = "screening";
+    } else if (query.includes("treat") || query.includes("therap") || query.includes("surgery") || query.includes("option") || query.includes("chemo") || query.includes("radiation")) {
       responseKey = "treatment";
-    } else if (query.includes("risk") || query.includes("cause") || query.includes("factor")) {
+    } else if (query.includes("risk") || query.includes("cause") || query.includes("factor") || query.includes("chance") || query.includes("likely")) {
       responseKey = "risk";
-    } else if (query.includes("prevent") || query.includes("avoid") || query.includes("reduce risk")) {
+    } else if (query.includes("prevent") || query.includes("avoid") || query.includes("reduce risk") || query.includes("lower chance") || query.includes("stop")) {
       responseKey = "prevention";
+    } else if (query.includes("research") || query.includes("study") || query.includes("trial") || query.includes("new") || query.includes("advance") || query.includes("develop")) {
+      responseKey = "research";
     }
     
     // Return a response even if all AI providers fail
