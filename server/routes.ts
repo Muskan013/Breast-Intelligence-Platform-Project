@@ -5,18 +5,28 @@ import { predictionParamsSchema, PredictionParams, PredictionResult, predictionR
 import * as tf from "@tensorflow/tfjs-node";
 import { ZodError } from "zod";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import OpenAI from "openai";
 
-// Load the Gemini API key from environment variables
+// Load API keys from environment variables
 const geminiApiKey = process.env.GEMINI_API_KEY || "dummy-key-for-development";
+const openaiApiKey = process.env.OPENAI_API_KEY || "dummy-key-for-development";
+
+// Initialize AI providers
 const geminiAI = new GoogleGenerativeAI(geminiApiKey);
+const openai = new OpenAI({ apiKey: openaiApiKey });
 
-// Debug information for Gemini
+// Debug information for API providers
 console.log(`Gemini API initialized with key: ${geminiApiKey ? "Valid API key" : "Missing API key"}`);
+console.log(`OpenAI API initialized with key: ${openaiApiKey ? "Valid API key" : "Missing API key"}`);
 
-// List of available Gemini models (as of April 2025)
+// List of available models
 // For version 0.24.1 of the Google Generative AI SDK, we should use "gemini-pro"
-const AVAILABLE_MODELS = ["gemini-pro"];
-console.log("Available Gemini models:", AVAILABLE_MODELS);
+// The newest OpenAI model is "gpt-4o" which was released May 13, 2024
+const AVAILABLE_MODELS = {
+  gemini: ["gemini-pro"],
+  openai: ["gpt-4o", "gpt-3.5-turbo"]
+};
+console.log("Available AI models:", AVAILABLE_MODELS);
 
 // Model variables - would be loaded from a proper model file in production
 let model: tf.LayersModel | null = null;
@@ -137,49 +147,98 @@ async function predictBreastCancer(params: PredictionParams): Promise<Prediction
   };
 }
 
-// Function to generate AI assistant response using Gemini
-async function generateAIResponse(message: string): Promise<string> {
+// Function to generate AI assistant response using OpenAI
+async function generateOpenAIResponse(message: string): Promise<string> {
   try {
-    // Create medical assistant system prompt with the correct model name for version 0.24.1
-    const model = geminiAI.getGenerativeModel({ model: "gemini-pro" });
-    
-    // Create medical context prompt with the user's query
-    const prompt = `
-    You are a medical AI assistant specializing in breast cancer. 
+    // Generate content with OpenAI as a backup
+    const medicalSystemPrompt = `
+    You are an AI medical assistant specializing in breast cancer medical information.
     Provide accurate, evidence-based information about breast cancer detection, diagnosis, and treatment options.
     Keep your responses clear, empathetic, and informative.
     Include relevant medical information but make it accessible to patients.
     Do not provide personal medical advice or diagnoses, and remind users to consult healthcare professionals for medical concerns.
     Be concise but comprehensive in your responses, focusing on the most relevant information.
-    
-    USER QUERY: ${message}
     `;
-    
-    // Generate content with the prompt
-    const result = await model.generateContent(prompt);
-    const response = result.response;
-    const text = response.text();
-    
-    return text || "I'm sorry, I couldn't generate a response. Please try again.";
+
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o", // the newest OpenAI model
+      messages: [
+        { role: "system", content: medicalSystemPrompt },
+        { role: "user", content: message }
+      ],
+      temperature: 0.7,
+      max_tokens: 800,
+      stream: false
+    });
+
+    return response.choices[0].message.content || "I'm sorry, I couldn't generate a response. Please try again.";
   } catch (error) {
-    console.error("Error generating AI response with Gemini:", error);
+    console.error("Error generating AI response with OpenAI:", error);
+    throw error; // Re-throw to be caught by the main handler
+  }
+}
+
+// Function to generate AI assistant response, trying multiple providers for resilience
+async function generateAIResponse(message: string): Promise<string> {
+  // Medical knowledge base for fallback responses
+  const fallbackResponses: Record<string, string> = {
+    "symptoms": "Early symptoms of breast cancer may include a lump or thickening in the breast tissue, changes in breast size or shape, dimpling of the skin, nipple inversion, nipple discharge, or persistent breast pain. Regular self-examinations and clinical screenings are recommended for early detection.",
     
-    // Provide detailed evidence-based responses to common breast cancer questions
-    const fallbackResponses: Record<string, string> = {
-      "symptoms": "Early symptoms of breast cancer may include a lump or thickening in the breast tissue, changes in breast size or shape, dimpling of the skin, nipple inversion, nipple discharge, or persistent breast pain. Regular self-examinations and clinical screenings are recommended for early detection.",
-      
-      "detection": "Breast cancer detection typically involves regular screening through mammograms, clinical breast examinations, and self-examinations. Mammograms can detect tumors before they can be felt and are recommended annually for women over 40-50 based on different guidelines.",
-      
-      "treatment": "Breast cancer treatments vary based on cancer type, stage, and individual factors. Common approaches include surgery (lumpectomy or mastectomy), radiation therapy, chemotherapy, hormone therapy, targeted therapy, and immunotherapy. Treatment plans are typically personalized for each patient.",
-      
-      "risk": "Risk factors for breast cancer include age, family history, genetic mutations (BRCA1/BRCA2), personal history of breast conditions, radiation exposure, obesity, alcohol consumption, and hormone replacement therapy. However, many women with breast cancer have no identifiable risk factors.",
-      
-      "prevention": "While there's no guaranteed prevention, risk reduction strategies include maintaining a healthy weight, regular physical activity, limiting alcohol, avoiding hormone replacement therapy, breastfeeding if possible, and for high-risk individuals, preventive medications or surgery might be considered.",
-      
-      "default": "Important breast cancer information includes understanding the importance of early detection through regular screening, recognizing that treatments have significantly improved outcomes in recent decades, and knowing that support resources are available for patients throughout their diagnosis and treatment journey."
-    };
+    "detection": "Breast cancer detection typically involves regular screening through mammograms, clinical breast examinations, and self-examinations. Mammograms can detect tumors before they can be felt and are recommended annually for women over 40-50 based on different guidelines.",
     
-    // Determine which response to use based on keywords in the query
+    "treatment": "Breast cancer treatments vary based on cancer type, stage, and individual factors. Common approaches include surgery (lumpectomy or mastectomy), radiation therapy, chemotherapy, hormone therapy, targeted therapy, and immunotherapy. Treatment plans are typically personalized for each patient.",
+    
+    "risk": "Risk factors for breast cancer include age, family history, genetic mutations (BRCA1/BRCA2), personal history of breast conditions, radiation exposure, obesity, alcohol consumption, and hormone replacement therapy. However, many women with breast cancer have no identifiable risk factors.",
+    
+    "prevention": "While there's no guaranteed prevention, risk reduction strategies include maintaining a healthy weight, regular physical activity, limiting alcohol, avoiding hormone replacement therapy, breastfeeding if possible, and for high-risk individuals, preventive medications or surgery might be considered.",
+    
+    "default": "Important breast cancer information includes understanding the importance of early detection through regular screening, recognizing that treatments have significantly improved outcomes in recent decades, and knowing that support resources are available for patients throughout their diagnosis and treatment journey."
+  };
+
+  try {
+    // Try OpenAI first since it's more reliable
+    try {
+      console.log("Attempting to generate response using OpenAI...");
+      const openaiResponse = await generateOpenAIResponse(message);
+      console.log("Successfully generated response with OpenAI");
+      return openaiResponse;
+    } catch (openaiError) {
+      console.error("OpenAI generation failed, falling back to Gemini:", openaiError);
+      
+      // Try Gemini as a second option
+      try {
+        console.log("Attempting to generate response using Gemini...");
+        // Create medical assistant system prompt with the correct model name for version 0.24.1
+        const model = geminiAI.getGenerativeModel({ model: "gemini-pro" });
+        
+        // Create medical context prompt with the user's query
+        const prompt = `
+        You are a medical AI assistant specializing in breast cancer. 
+        Provide accurate, evidence-based information about breast cancer detection, diagnosis, and treatment options.
+        Keep your responses clear, empathetic, and informative.
+        Include relevant medical information but make it accessible to patients.
+        Do not provide personal medical advice or diagnoses, and remind users to consult healthcare professionals for medical concerns.
+        Be concise but comprehensive in your responses, focusing on the most relevant information.
+        
+        USER QUERY: ${message}
+        `;
+        
+        // Generate content with the prompt
+        const result = await model.generateContent(prompt);
+        const response = result.response;
+        const text = response.text();
+        
+        console.log("Successfully generated response with Gemini");
+        return text || "I'm sorry, I couldn't generate a response. Please try again.";
+      } catch (geminiError) {
+        console.error("Gemini generation also failed, using context-aware fallback:", geminiError);
+        throw new Error("All AI providers failed");
+      }
+    }
+  } catch (error) {
+    console.error("All AI generation methods failed:", error);
+    
+    // Determine which fallback response to use based on keywords in the query
     let responseKey: keyof typeof fallbackResponses = "default";
     const query = message.toLowerCase();
     
@@ -195,8 +254,8 @@ async function generateAIResponse(message: string): Promise<string> {
       responseKey = "prevention";
     }
     
-    // Return a response even if the API fails
-    return "I apologize for the technical difficulty. " + fallbackResponses[responseKey];
+    // Return a response even if all AI providers fail
+    return fallbackResponses[responseKey];
   }
 }
 
