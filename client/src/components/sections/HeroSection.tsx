@@ -27,15 +27,15 @@ export default function HeroSection() {
             </div>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight">
-              <span className="block">Next-Gen</span>
+              <span className="block">BreastCare</span>
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-accent to-secondary">
-                Medical Diagnostics
+                Predict
               </span>
-              <span className="block">Powered by AI</span>
+              <span className="block">AI Platform</span>
             </h1>
             
             <p className="text-lg text-gray-300 mb-8 max-w-xl">
-              Our revolutionary AI platform leverages deep learning algorithms to assist in early cancer detection with unprecedented accuracy, enhancing clinical decision-making.
+              Advanced AI-powered breast cancer prediction and educational platform for healthcare professionals, leveraging deep learning for early detection with unprecedented accuracy.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4">
@@ -54,7 +54,7 @@ export default function HeroSection() {
                 <div className="mr-2 h-5 w-5 rounded-full bg-gradient-to-r from-primary to-accent flex items-center justify-center">
                   <span className="text-xs font-bold">AI</span>
                 </div>
-                Gemini Assistant
+                Medical Assistant
               </Button>
             </div>
 

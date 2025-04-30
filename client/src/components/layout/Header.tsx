@@ -11,18 +11,16 @@ export default function Header() {
             <div className="absolute inset-0 bg-primary rounded-full blur-lg opacity-40"></div>
           </div>
           <h1 className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-primary via-accent to-secondary">
-            NeuroMedica<span className="text-white">AI</span>
+            BreastCare <span className="text-white">Predict</span>
           </h1>
         </div>
         
         <nav className="bg-gray-900 p-2 rounded-full bg-opacity-70 backdrop-blur-md border border-gray-800 glow-border">
           <ul className="flex space-x-1 md:space-x-2">
             <li>
-              <Link href="/">
-                <a className="hover:bg-primary/20 px-3 py-1.5 rounded-full transition-colors font-medium flex items-center">
-                  <Activity className="h-4 w-4 mr-1.5" />
-                  <span>Home</span>
-                </a>
+              <Link href="/" className="hover:bg-primary/20 px-3 py-1.5 rounded-full transition-colors font-medium flex items-center">
+                <Activity className="h-4 w-4 mr-1.5" />
+                <span>Home</span>
               </Link>
             </li>
             <li>
@@ -55,11 +53,9 @@ export default function Header() {
               </a>
             </li>
             <li>
-              <Link href="/blog">
-                <a className="hover:bg-primary/20 px-3 py-1.5 rounded-full transition-colors font-medium flex items-center">
-                  <BookOpen className="h-4 w-4 mr-1.5" />
-                  <span>Blog</span>
-                </a>
+              <Link href="/blog" className="hover:bg-primary/20 px-3 py-1.5 rounded-full transition-colors font-medium flex items-center">
+                <BookOpen className="h-4 w-4 mr-1.5" />
+                <span>Blog</span>
               </Link>
             </li>
           </ul>
