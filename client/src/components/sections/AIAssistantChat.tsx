@@ -130,16 +130,16 @@ export default function AIAssistantChat() {
         <div className="bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNmMtMy4zMTQgMC02LTIuNjg2LTYtNnMyLjY4Ni02IDYtNiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utb3BhY2l0eT0iLjA1Ii8+PGNpcmNsZSBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9Ii4wNSIgY3g9IjQwIiBjeT0iMzAiIHI9IjEiLz48Y2lyY2xlIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iLjA1IiBjeD0iMjAiIGN5PSIyMCIgcj0iMSIvPjxjaXJjbGUgZmlsbD0iI2ZmZiIgZmlsbC1vcGFjaXR5PSIuMDUiIGN4PSI0MCIgY3k9IjQwIiByPSIxIi8+PC9nPjwvc3ZnPg==')] absolute inset-0 opacity-10 z-0"></div>
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center mb-16">
+      <div className="container mx-auto px-3 sm:px-4 relative z-10">
+        <div className="text-center mb-8 md:mb-16">
           <div className="inline-flex items-center mb-4 px-3 py-1 rounded-full text-primary bg-primary/10 backdrop-blur-sm border border-primary/20">
             <MessageSquare className="h-4 w-4 mr-2" />
             <span className="text-sm font-medium">AI Medical Consultation</span>
           </div>
-          <h2 className="text-4xl font-bold text-white mb-5 bg-clip-text text-transparent bg-gradient-to-r from-white via-primary to-white">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-4 md:mb-5 bg-clip-text text-transparent bg-gradient-to-r from-white via-primary to-white">
             BreastCare Predict Medical Assistant
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto text-lg">
+          <p className="text-gray-400 max-w-2xl mx-auto text-base md:text-lg px-2">
             Advanced AI-powered medical assistant for healthcare professionals
           </p>
         </div>
@@ -171,14 +171,14 @@ export default function AIAssistantChat() {
             </div>
             
             {/* Chat messages area */}
-            <div className="h-96 p-6 overflow-y-auto" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.4) 100%)' }}>
+            <div className="h-64 sm:h-80 md:h-96 p-4 sm:p-6 overflow-y-auto" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.4) 100%)' }}>
               {messages.length === 0 ? (
                 <div className="flex mb-6">
-                  <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white mr-3 flex-shrink-0">
-                    <Bot className="h-4 w-4" />
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-primary flex items-center justify-center text-white mr-2 sm:mr-3 flex-shrink-0">
+                    <Bot className="h-3 w-3 sm:h-4 sm:w-4" />
                   </div>
-                  <div className="bg-black/40 backdrop-blur-md p-4 rounded-lg border border-white/10 max-w-[80%] text-gray-200">
-                    <p>
+                  <div className="bg-black/40 backdrop-blur-md p-3 sm:p-4 rounded-lg border border-white/10 max-w-[85%] sm:max-w-[80%] text-gray-200">
+                    <p className="text-sm sm:text-base">
                       Hello! I'm your BreastCare Predict medical assistant. I can answer questions about breast cancer detection, diagnosis, and treatment options based on the latest medical research. How can I help you today?
                     </p>
                     <div className="flex items-center mt-2 text-xs text-gray-400">
@@ -190,28 +190,28 @@ export default function AIAssistantChat() {
                 messages.map((message, index) => (
                   <div 
                     key={index} 
-                    className={`flex mb-6 ${message.role === 'user' ? 'justify-end' : ''}`}
+                    className={`flex mb-4 sm:mb-6 ${message.role === 'user' ? 'justify-end' : ''}`}
                   >
                     {message.role === 'assistant' && (
-                      <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white mr-3 flex-shrink-0">
-                        <Bot className="h-4 w-4" />
+                      <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-primary flex items-center justify-center text-white mr-2 sm:mr-3 flex-shrink-0">
+                        <Bot className="h-3 w-3 sm:h-4 sm:w-4" />
                       </div>
                     )}
                     
-                    <div className={`p-4 rounded-lg border max-w-[80%] ${
+                    <div className={`p-3 sm:p-4 rounded-lg border max-w-[85%] sm:max-w-[80%] ${
                       message.role === 'user' 
                         ? 'bg-primary/10 backdrop-blur-md border-primary/30 text-white ml-auto' 
                         : 'bg-black/40 backdrop-blur-md border-white/10 text-gray-200'
                     }`}>
-                      <p className="whitespace-pre-wrap">{message.content}</p>
+                      <p className="whitespace-pre-wrap text-sm sm:text-base">{message.content}</p>
                       <div className="flex items-center mt-2 text-xs text-gray-400">
                         <span>{formatTime(message.timestamp)}</span>
                       </div>
                     </div>
                     
                     {message.role === 'user' && (
-                      <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center text-gray-300 ml-3 flex-shrink-0">
-                        <User className="h-4 w-4" />
+                      <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gray-700 flex items-center justify-center text-gray-300 ml-2 sm:ml-3 flex-shrink-0">
+                        <User className="h-3 w-3 sm:h-4 sm:w-4" />
                       </div>
                     )}
                   </div>
@@ -219,11 +219,11 @@ export default function AIAssistantChat() {
               )}
               
               {isLoading && (
-                <div className="flex mb-6">
-                  <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white mr-3 flex-shrink-0">
-                    <Bot className="h-4 w-4" />
+                <div className="flex mb-4 sm:mb-6">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-primary flex items-center justify-center text-white mr-2 sm:mr-3 flex-shrink-0">
+                    <Bot className="h-3 w-3 sm:h-4 sm:w-4" />
                   </div>
-                  <div className="bg-black/40 backdrop-blur-md p-4 rounded-lg border border-white/10">
+                  <div className="bg-black/40 backdrop-blur-md p-3 sm:p-4 rounded-lg border border-white/10">
                     <div className="flex space-x-2">
                       <div className="bg-primary/40 w-2 h-2 rounded-full animate-pulse"></div>
                       <div className="bg-primary/40 w-2 h-2 rounded-full animate-pulse delay-100"></div>
@@ -237,24 +237,24 @@ export default function AIAssistantChat() {
             </div>
             
             {/* Chat input area */}
-            <div className="p-6 border-t border-white/10">
+            <div className="p-3 sm:p-4 md:p-6 border-t border-white/10">
               <form onSubmit={handleSubmit} className="flex items-center w-full">
                 <div className="relative flex-grow">
                   <Input
                     type="text"
-                    placeholder={isListening ? "Listening..." : "Type your medical question here..."}
+                    placeholder={isListening ? "Listening..." : "Type your question..."}
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
-                    className={`w-full bg-black/30 border-white/10 text-gray-200 rounded-full py-3 px-5 focus-visible:ring-primary ${isListening ? 'pr-12 border-primary' : ''}`}
+                    className={`w-full bg-black/30 border-white/10 text-gray-200 rounded-full py-2 md:py-3 px-4 md:px-5 text-sm sm:text-base focus-visible:ring-primary ${isListening ? 'pr-10 sm:pr-12 border-primary' : ''}`}
                     disabled={isLoading}
                   />
                   {isListening && (
-                    <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+                    <div className="absolute right-3 sm:right-4 top-1/2 transform -translate-y-1/2">
                       <div className="flex space-x-1">
-                        <div className="bg-primary w-1 h-3 animate-pulse" style={{ animationDuration: '0.8s' }}></div>
-                        <div className="bg-primary w-1 h-4 animate-pulse" style={{ animationDuration: '1s' }}></div>
-                        <div className="bg-primary w-1 h-2 animate-pulse" style={{ animationDuration: '0.6s' }}></div>
-                        <div className="bg-primary w-1 h-3 animate-pulse" style={{ animationDuration: '0.7s' }}></div>
+                        <div className="bg-primary w-1 h-2 sm:h-3 animate-pulse" style={{ animationDuration: '0.8s' }}></div>
+                        <div className="bg-primary w-1 h-3 sm:h-4 animate-pulse" style={{ animationDuration: '1s' }}></div>
+                        <div className="bg-primary w-1 h-1.5 sm:h-2 animate-pulse" style={{ animationDuration: '0.6s' }}></div>
+                        <div className="bg-primary w-1 h-2 sm:h-3 animate-pulse" style={{ animationDuration: '0.7s' }}></div>
                       </div>
                     </div>
                   )}
@@ -263,22 +263,22 @@ export default function AIAssistantChat() {
                 {/* Speech recognition button */}
                 <Button 
                   type="button"
-                  className={`ml-2 ${isListening 
+                  className={`ml-1.5 sm:ml-2 ${isListening 
                     ? 'bg-primary hover:bg-primary/90' 
-                    : 'bg-gray-700 hover:bg-gray-600'} text-white rounded-full p-3 aspect-square`}
+                    : 'bg-gray-700 hover:bg-gray-600'} text-white rounded-full p-2 sm:p-3 aspect-square`}
                   onClick={toggleListening}
                   title={isListening ? "Stop listening" : "Start voice input"}
                 >
-                  {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+                  {isListening ? <MicOff className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> : <Mic className="h-3.5 w-3.5 sm:h-4 sm:w-4" />}
                 </Button>
                 
                 {/* Send button */}
                 <Button 
                   type="submit" 
-                  className="ml-2 bg-gradient-to-r from-primary to-accent hover:opacity-90 text-white rounded-full p-3 aspect-square"
+                  className="ml-1.5 sm:ml-2 bg-gradient-to-r from-primary to-accent hover:opacity-90 text-white rounded-full p-2 sm:p-3 aspect-square"
                   disabled={isLoading || !input.trim()}
                 >
-                  <Send className="h-4 w-4" />
+                  <Send className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                 </Button>
               </form>
               
@@ -316,7 +316,7 @@ export default function AIAssistantChat() {
           <div className="my-8">
             <h3 className="text-white text-lg mb-4 font-medium text-center">Common Questions About Breast Cancer</h3>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
               {/* Category: Symptoms */}
               <div>
                 <h4 className="text-primary mb-3 text-sm font-medium">Symptoms & Detection</h4>

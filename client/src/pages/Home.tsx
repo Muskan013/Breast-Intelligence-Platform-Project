@@ -8,10 +8,10 @@ import AIAssistantChat from "@/components/sections/AIAssistantChat";
 
 export default function Home() {
   return (
-    <div className="bg-gray-50 min-h-screen flex flex-col">
+    <div className="bg-gray-50 min-h-screen flex flex-col overflow-x-hidden">
       <Header />
       <HeroSection />
-      <main className="container mx-auto px-4 py-12">
+      <main className="container mx-auto px-3 sm:px-4 py-6 sm:py-8 md:py-12 flex flex-col gap-12 md:gap-20">
         <PredictionSection />
         <FeatureHighlights />
         <EducationalResources />
