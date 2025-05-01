@@ -219,7 +219,9 @@ export default function AIAssistantChat() {
                   </div>
                   <div className="bg-black/40 backdrop-blur-md p-3 sm:p-4 rounded-lg border border-white/10 max-w-[85%] sm:max-w-[80%] text-gray-200">
                     <MedicalMessageContent 
-                      content="Hello! I'm your BreastCare Predict medical assistant. I can answer questions about breast cancer detection, diagnosis, and treatment options based on the latest medical research. My responses include an automatic medical jargon translator that explains complex terms like 'carcinoma', 'metastasis', and 'lumpectomy' in simple language. Just click on any highlighted medical term to see a definition. How can I help you today?" 
+                      content="Hello! I'm your BreastCare Predict medical assistant. I can answer questions about breast cancer detection, diagnosis, and treatment options based on the latest medical research. My responses include an automatic medical jargon translator that explains complex terms like 'carcinoma', 'metastasis', and 'lumpectomy' in simple language. Just click on any highlighted medical term to see a definition. How can I help you today?"
+                      translationEnabled={translationEnabled}
+                      showGlossary={translationEnabled}
                     />
                     <div className="flex items-center mt-2 text-xs text-gray-400">
                       <span>{formatTime(new Date().toISOString())}</span>
@@ -244,7 +246,11 @@ export default function AIAssistantChat() {
                         : 'bg-black/40 backdrop-blur-md border-white/10 text-gray-200'
                     }`}>
                       {message.role === 'assistant' ? (
-                        <MedicalMessageContent content={message.content} />
+                        <MedicalMessageContent 
+                          content={message.content} 
+                          translationEnabled={translationEnabled}
+                          showGlossary={translationEnabled}
+                        />
                       ) : (
                         <p className="whitespace-pre-wrap text-sm sm:text-base">{message.content}</p>
                       )}
