@@ -3,8 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/componen
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useChat } from "@/hooks/useChat";
-import { Send, Bot, User, RefreshCw, MessageSquare, Mic, MicOff, Volume2 } from "lucide-react";
+import { Send, Bot, User, RefreshCw, MessageSquare, Mic, MicOff, Volume2, BookOpen } from "lucide-react";
 import BackButton from "@/components/ui/BackButton";
+import MedicalMessageContent from "@/components/ui/MedicalMessageContent";
 
 // TypeScript declarations for Web Speech API
 declare global {
@@ -162,7 +163,13 @@ export default function AIAssistantChat() {
                 </div>
                 <div>
                   <h3 className="text-white text-lg font-medium">BreastCare Predict Assistant</h3>
-                  <p className="text-gray-400 text-sm">Powered by multi-provider AI technology</p>
+                  <div className="flex items-center">
+                    <p className="text-gray-400 text-sm">Powered by multi-provider AI technology</p>
+                    <span className="ml-2 px-2 py-0.5 bg-blue-500/20 text-blue-300 text-xs rounded-full border border-blue-500/30 flex items-center">
+                      <BookOpen className="h-3 w-3 mr-1" />
+                      Medical Jargon Translator
+                    </span>
+                  </div>
                 </div>
               </div>
               <Button 
@@ -183,9 +190,9 @@ export default function AIAssistantChat() {
                     <Bot className="h-3 w-3 sm:h-4 sm:w-4" />
                   </div>
                   <div className="bg-black/40 backdrop-blur-md p-3 sm:p-4 rounded-lg border border-white/10 max-w-[85%] sm:max-w-[80%] text-gray-200">
-                    <p className="text-sm sm:text-base">
-                      Hello! I'm your BreastCare Predict medical assistant. I can answer questions about breast cancer detection, diagnosis, and treatment options based on the latest medical research. How can I help you today?
-                    </p>
+                    <MedicalMessageContent 
+                      content="Hello! I'm your BreastCare Predict medical assistant. I can answer questions about breast cancer detection, diagnosis, and treatment options based on the latest medical research. My responses include an automatic medical jargon translator that explains complex terms like 'carcinoma', 'metastasis', and 'lumpectomy' in simple language. Just click on any highlighted medical term to see a definition. How can I help you today?" 
+                    />
                     <div className="flex items-center mt-2 text-xs text-gray-400">
                       <span>{formatTime(new Date().toISOString())}</span>
                     </div>
@@ -208,7 +215,11 @@ export default function AIAssistantChat() {
                         ? 'bg-primary/10 backdrop-blur-md border-primary/30 text-white ml-auto' 
                         : 'bg-black/40 backdrop-blur-md border-white/10 text-gray-200'
                     }`}>
-                      <p className="whitespace-pre-wrap text-sm sm:text-base">{message.content}</p>
+                      {message.role === 'assistant' ? (
+                        <MedicalMessageContent content={message.content} />
+                      ) : (
+                        <p className="whitespace-pre-wrap text-sm sm:text-base">{message.content}</p>
+                      )}
                       <div className="flex items-center mt-2 text-xs text-gray-400">
                         <span>{formatTime(message.timestamp)}</span>
                       </div>
@@ -322,6 +333,27 @@ export default function AIAssistantChat() {
             <h3 className="text-white text-lg mb-4 font-medium text-center">Common Questions About Breast Cancer</h3>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+              {/* Special medical terminology feature */}
+              <div>
+                <h4 className="text-blue-400 mb-3 text-sm font-medium flex items-center">
+                  <BookOpen className="h-4 w-4 mr-1.5" />
+                  Medical Terminology
+                </h4>
+                <div className="space-y-2">
+                  <button 
+                    onClick={() => {
+                      if (!isLoading) {
+                        setInput("Explain breast cancer diagnosis using medical terms");
+                        sendMessage("Explain breast cancer diagnosis using medical terms");
+                      }
+                    }}
+                    className="w-full bg-blue-900/30 backdrop-blur-sm border border-blue-500/20 hover:bg-blue-900/50 rounded-lg p-3 text-left text-blue-300 text-sm transition-colors"
+                  >
+                    <span className="text-blue-400 mr-1 opacity-70">•</span> Explain diagnosis with medical terms
+                  </button>
+                </div>
+              </div>
+            
               {/* Category: Symptoms */}
               <div>
                 <h4 className="text-primary mb-3 text-sm font-medium">Symptoms & Detection</h4>

@@ -195,3 +195,34 @@ path {
   opacity: 1;
 }
 
+/* Medical terminology styles */
+.medical-term-highlight {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dashed rgba(59, 130, 246, 0.5);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.medical-term-highlight:hover {
+  color: rgb(59, 130, 246);
+  border-bottom-color: rgb(59, 130, 246);
+}
+
+.medical-term-highlight::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(59, 130, 246, 0.3), rgba(192, 132, 252, 0.5));
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+  transform-origin: left;
+}
+
+.medical-term-highlight:hover::after {
+  transform: scaleX(1);
+}
+
