@@ -258,9 +258,9 @@ function DynamicChart({
     return (
       <ResponsiveContainer width="100%" height={height}>
         <RadarChart outerRadius={100} width={500} height={300} data={transformedData}>
-          <PolarGrid stroke="#555" />
-          <PolarAngleAxis dataKey="name" stroke="#999" fontSize={12} />
-          <PolarRadiusAxis stroke="#999" fontSize={12} />
+          <PolarGrid stroke="#e5e5e5" />
+          <PolarAngleAxis dataKey="name" stroke="#666" fontSize={12} />
+          <PolarRadiusAxis stroke="#666" fontSize={12} />
           {data.datasets.map((dataset, index) => (
             <Radar
               key={dataset.name}
@@ -401,17 +401,17 @@ export default function MedicalAnalytics() {
           {/* Overview Tab Content */}
           <TabsContent value="overview" className="mt-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <Card className="backdrop-blur-md bg-black/30 border border-white/10 hover:border-primary/30 transition-colors">
+              <Card className="shadow-md border border-gray-200 hover:border-primary/30 transition-colors bg-white">
                 <CardHeader className="flex flex-row items-center justify-between pb-2 pt-6">
-                  <CardTitle className="text-sm font-medium text-gray-400">Age Distribution</CardTitle>
+                  <CardTitle className="text-sm font-medium text-gray-600">Age Distribution</CardTitle>
                   <Activity className="h-4 w-4 text-primary" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold text-white">
+                  <div className="text-2xl font-bold text-gray-800">
                     45-65
-                    <span className="text-sm ml-2 font-normal text-gray-400">peak range</span>
+                    <span className="text-sm ml-2 font-normal text-gray-500">peak range</span>
                   </div>
-                  <p className="text-xs text-gray-400 mt-1">Most common age range for diagnosis</p>
+                  <p className="text-xs text-gray-500 mt-1">Most common age range for diagnosis</p>
                   <div className="h-[100px] mt-4">
                     <ResponsiveContainer width="100%" height="100%">
                       <LineChart data={transformedData(data.ageDistribution)}>
@@ -422,26 +422,26 @@ export default function MedicalAnalytics() {
                           strokeWidth={2}
                           dot={false}
                         />
-                        <CartesianGrid stroke="#333" strokeDasharray="3 3" vertical={false} opacity={0.2} />
-                        <XAxis dataKey="name" tick={false} stroke="#333" opacity={0.3} />
-                        <YAxis tick={false} stroke="#333" opacity={0.3} />
+                        <CartesianGrid stroke="#e5e5e5" strokeDasharray="3 3" vertical={false} />
+                        <XAxis dataKey="name" tick={false} stroke="#e5e5e5" />
+                        <YAxis tick={false} stroke="#e5e5e5" />
                       </LineChart>
                     </ResponsiveContainer>
                   </div>
                 </CardContent>
               </Card>
               
-              <Card className="backdrop-blur-md bg-black/30 border border-white/10 hover:border-primary/30 transition-colors">
+              <Card className="shadow-md border border-gray-200 hover:border-primary/30 transition-colors bg-white">
                 <CardHeader className="flex flex-row items-center justify-between pb-2 pt-6">
-                  <CardTitle className="text-sm font-medium text-gray-400">Survival Rate</CardTitle>
+                  <CardTitle className="text-sm font-medium text-gray-600">Survival Rate</CardTitle>
                   <Heart className="h-4 w-4 text-primary" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold text-white">
+                  <div className="text-2xl font-bold text-gray-800">
                     90%
-                    <span className="text-sm ml-2 font-normal text-gray-400">overall</span>
+                    <span className="text-sm ml-2 font-normal text-gray-500">overall</span>
                   </div>
-                  <p className="text-xs text-gray-400 mt-1">5-year survival rate in 2025</p>
+                  <p className="text-xs text-gray-500 mt-1">5-year survival rate in 2025</p>
                   <div className="h-[100px] mt-4">
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart data={transformedData(data.survivalRates)}>
@@ -450,26 +450,26 @@ export default function MedicalAnalytics() {
                           fill={COLORS[0]}
                           radius={[4, 4, 0, 0]}
                         />
-                        <CartesianGrid stroke="#333" strokeDasharray="3 3" vertical={false} opacity={0.2} />
-                        <XAxis dataKey="name" tick={false} stroke="#333" opacity={0.3} />
-                        <YAxis tick={false} stroke="#333" opacity={0.3} />
+                        <CartesianGrid stroke="#e5e5e5" strokeDasharray="3 3" vertical={false} />
+                        <XAxis dataKey="name" tick={false} stroke="#e5e5e5" />
+                        <YAxis tick={false} stroke="#e5e5e5" />
                       </BarChart>
                     </ResponsiveContainer>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="backdrop-blur-md bg-black/30 border border-white/10 hover:border-primary/30 transition-colors">
+              <Card className="shadow-md border border-gray-200 hover:border-primary/30 transition-colors bg-white">
                 <CardHeader className="flex flex-row items-center justify-between pb-2 pt-6">
-                  <CardTitle className="text-sm font-medium text-gray-400">Cases Trend</CardTitle>
+                  <CardTitle className="text-sm font-medium text-gray-600">Cases Trend</CardTitle>
                   <Calendar className="h-4 w-4 text-primary" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold text-white">
+                  <div className="text-2xl font-bold text-gray-800">
                     -4.8%
-                    <span className="text-sm ml-2 font-normal text-green-400">decreasing</span>
+                    <span className="text-sm ml-2 font-normal text-green-500">decreasing</span>
                   </div>
-                  <p className="text-xs text-gray-400 mt-1">Annual change in new cases (2020-2025)</p>
+                  <p className="text-xs text-gray-500 mt-1">Annual change in new cases (2020-2025)</p>
                   <div className="h-[100px] mt-4">
                     <ResponsiveContainer width="100%" height="100%">
                       <LineChart data={transformedData(data.yearlyTrends).slice(-5)}>
@@ -480,9 +480,9 @@ export default function MedicalAnalytics() {
                           strokeWidth={2}
                           dot={false}
                         />
-                        <CartesianGrid stroke="#333" strokeDasharray="3 3" vertical={false} opacity={0.2} />
-                        <XAxis dataKey="name" tick={false} stroke="#333" opacity={0.3} />
-                        <YAxis tick={false} stroke="#333" opacity={0.3} />
+                        <CartesianGrid stroke="#e5e5e5" strokeDasharray="3 3" vertical={false} />
+                        <XAxis dataKey="name" tick={false} stroke="#e5e5e5" />
+                        <YAxis tick={false} stroke="#e5e5e5" />
                       </LineChart>
                     </ResponsiveContainer>
                   </div>
