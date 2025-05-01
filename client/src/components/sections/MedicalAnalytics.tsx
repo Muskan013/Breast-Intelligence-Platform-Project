@@ -40,10 +40,10 @@ import {
   Zap
 } from "lucide-react";
 
-// Custom colors for charts
+// Custom colors for charts - matched to the site's color scheme
 const COLORS = [
-  "#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF", 
-  "#FF9F40", "#8AC926", "#1982C4", "#6A4C93", "#F94144"
+  "#00C8FF", "#8d46ff", "#38d6c4", "#ff4b76", "#ffc123", 
+  "#47c1ff", "#8ac926", "#1982c4", "#6a4c93", "#f94144"
 ];
 
 const CHART_TYPES = {
@@ -70,18 +70,18 @@ function ChartContainer({
   onChartTypeChange?: (type: ChartType) => void;
 }) {
   return (
-    <Card className="backdrop-blur-md bg-black/30 border border-white/10 overflow-hidden">
-      <CardHeader className="border-b border-white/10 px-6 py-4 flex flex-row items-center justify-between">
+    <Card className="shadow-md border border-gray-200 overflow-hidden bg-white">
+      <CardHeader className="border-b border-gray-100 px-6 py-4 flex flex-row items-center justify-between">
         <div>
-          <CardTitle className="text-white text-lg">{title}</CardTitle>
-          <CardDescription className="text-gray-400 text-sm">{description}</CardDescription>
+          <CardTitle className="text-gray-800 text-lg">{title}</CardTitle>
+          <CardDescription className="text-gray-500 text-sm">{description}</CardDescription>
         </div>
         {onChartTypeChange && (
-          <div className="flex space-x-1 bg-gray-900/70 rounded-lg p-1">
+          <div className="flex space-x-1 bg-gray-100 rounded-lg p-1">
             <Button
               variant="ghost"
               size="icon"
-              className={`rounded-md h-7 w-7 ${chartType === "bar" ? "bg-primary/30 text-primary" : "text-gray-400"}`}
+              className={`rounded-md h-7 w-7 ${chartType === "bar" ? "bg-white text-primary shadow-sm" : "text-gray-500"}`}
               onClick={() => onChartTypeChange("bar")}
             >
               <BarChartIcon className="h-4 w-4" />
@@ -89,7 +89,7 @@ function ChartContainer({
             <Button
               variant="ghost"
               size="icon"
-              className={`rounded-md h-7 w-7 ${chartType === "line" ? "bg-primary/30 text-primary" : "text-gray-400"}`}
+              className={`rounded-md h-7 w-7 ${chartType === "line" ? "bg-white text-primary shadow-sm" : "text-gray-500"}`}
               onClick={() => onChartTypeChange("line")}
             >
               <LineChartIcon className="h-4 w-4" />
@@ -97,7 +97,7 @@ function ChartContainer({
             <Button
               variant="ghost"
               size="icon"
-              className={`rounded-md h-7 w-7 ${chartType === "pie" ? "bg-primary/30 text-primary" : "text-gray-400"}`}
+              className={`rounded-md h-7 w-7 ${chartType === "pie" ? "bg-white text-primary shadow-sm" : "text-gray-500"}`}
               onClick={() => onChartTypeChange("pie")}
             >
               <PieChartIcon className="h-4 w-4" />
@@ -105,7 +105,7 @@ function ChartContainer({
             <Button
               variant="ghost"
               size="icon"
-              className={`rounded-md h-7 w-7 ${chartType === "radar" ? "bg-primary/30 text-primary" : "text-gray-400"}`}
+              className={`rounded-md h-7 w-7 ${chartType === "radar" ? "bg-white text-primary shadow-sm" : "text-gray-500"}`}
               onClick={() => onChartTypeChange("radar")}
             >
               <RadarIcon className="h-4 w-4" />
@@ -151,20 +151,20 @@ function DynamicChart({
           data={transformedData}
           margin={{ top: 20, right: 30, left: 20, bottom: 70 }}
         >
-          <CartesianGrid strokeDasharray="3 3" stroke="#444" opacity={0.2} />
+          <CartesianGrid strokeDasharray="3 3" stroke="#e5e5e5" />
           <XAxis 
             dataKey="name" 
-            stroke="#999" 
+            stroke="#666" 
             fontSize={12} 
             tickMargin={10} 
             angle={-45}
             textAnchor="end"
           />
-          <YAxis stroke="#999" fontSize={12} />
+          <YAxis stroke="#666" fontSize={12} />
           <Tooltip 
-            contentStyle={{ backgroundColor: '#111', border: '1px solid #333', borderRadius: '4px', color: '#eee' }} 
+            contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e5e5', borderRadius: '4px', color: '#333', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }} 
           />
-          <Legend wrapperStyle={{ fontSize: '12px', color: '#eee', marginTop: '10px' }} />
+          <Legend wrapperStyle={{ fontSize: '12px', color: '#666', marginTop: '10px' }} />
           {data.datasets.map((dataset, index) => (
             <Bar 
               key={dataset.name} 
@@ -187,20 +187,20 @@ function DynamicChart({
           data={transformedData}
           margin={{ top: 20, right: 30, left: 20, bottom: 70 }}
         >
-          <CartesianGrid strokeDasharray="3 3" stroke="#444" opacity={0.2} />
+          <CartesianGrid strokeDasharray="3 3" stroke="#e5e5e5" />
           <XAxis 
             dataKey="name" 
-            stroke="#999" 
+            stroke="#666" 
             fontSize={12} 
             tickMargin={10} 
             angle={-45}
             textAnchor="end"
           />
-          <YAxis stroke="#999" fontSize={12} />
+          <YAxis stroke="#666" fontSize={12} />
           <Tooltip 
-            contentStyle={{ backgroundColor: '#111', border: '1px solid #333', borderRadius: '4px', color: '#eee' }} 
+            contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e5e5', borderRadius: '4px', color: '#333', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }} 
           />
-          <Legend wrapperStyle={{ fontSize: '12px', color: '#eee', marginTop: '10px' }} />
+          <Legend wrapperStyle={{ fontSize: '12px', color: '#666', marginTop: '10px' }} />
           {data.datasets.map((dataset, index) => (
             <Line 
               key={dataset.name} 
@@ -208,7 +208,7 @@ function DynamicChart({
               dataKey={dataset.name} 
               stroke={COLORS[index % COLORS.length]} 
               strokeWidth={2}
-              dot={{ r: 4, stroke: COLORS[index % COLORS.length], fill: "#111" }}
+              dot={{ r: 4, stroke: COLORS[index % COLORS.length], fill: "#fff" }}
               activeDot={{ r: 6, stroke: COLORS[index % COLORS.length], strokeWidth: 2, fill: "#fff" }}
             />
           ))}
@@ -245,9 +245,9 @@ function DynamicChart({
             ))}
           </Pie>
           <Tooltip 
-            contentStyle={{ backgroundColor: '#111', border: '1px solid #333', borderRadius: '4px', color: '#eee' }} 
+            contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e5e5', borderRadius: '4px', color: '#333', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }} 
           />
-          <Legend wrapperStyle={{ fontSize: '12px', color: '#eee', marginTop: '10px' }} />
+          <Legend wrapperStyle={{ fontSize: '12px', color: '#666', marginTop: '10px' }} />
         </PieChart>
       </ResponsiveContainer>
     );
@@ -272,9 +272,9 @@ function DynamicChart({
             />
           ))}
           <Tooltip 
-            contentStyle={{ backgroundColor: '#111', border: '1px solid #333', borderRadius: '4px', color: '#eee' }} 
+            contentStyle={{ backgroundColor: '#fff', border: '1px solid #e5e5e5', borderRadius: '4px', color: '#333', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }} 
           />
-          <Legend wrapperStyle={{ fontSize: '12px', color: '#eee', marginTop: '10px' }} />
+          <Legend wrapperStyle={{ fontSize: '12px', color: '#666', marginTop: '10px' }} />
         </RadarChart>
       </ResponsiveContainer>
     );
@@ -312,7 +312,7 @@ export default function MedicalAnalytics() {
     return (
       <div className="w-full flex flex-col items-center justify-center py-20">
         <div className="w-16 h-16 rounded-full border-4 border-primary border-r-transparent animate-spin"></div>
-        <p className="mt-4 text-gray-400">Loading analytics data...</p>
+        <p className="mt-4 text-gray-500">Loading analytics data...</p>
       </div>
     );
   }
@@ -323,9 +323,9 @@ export default function MedicalAnalytics() {
         <div className="w-20 h-20 rounded-full bg-red-500/20 flex items-center justify-center mb-4">
           <Zap className="h-10 w-10 text-red-500" />
         </div>
-        <h3 className="text-xl font-bold text-white mb-2">Failed to load analytics</h3>
-        <p className="text-gray-400 mb-6 text-center max-w-md">There was an error fetching the medical analytics data. Please try again later.</p>
-        <Button onClick={() => refetch()} className="btn-futuristic">
+        <h3 className="text-xl font-bold text-gray-800 mb-2">Failed to load analytics</h3>
+        <p className="text-gray-600 mb-6 text-center max-w-md">There was an error fetching the medical analytics data. Please try again later.</p>
+        <Button onClick={() => refetch()} variant="default" className="bg-primary hover:bg-primary/90">
           <RefreshCw className="h-4 w-4 mr-2" />
           Retry
         </Button>
@@ -334,24 +334,20 @@ export default function MedicalAnalytics() {
   }
 
   return (
-    <section id="analytics" className="relative py-20 overflow-hidden">
-      {/* Background effects */}
-      <div className="absolute inset-0 overflow-hidden z-0">
-        <div className="absolute w-[800px] h-[800px] bg-primary/20 rounded-full blur-[150px] -top-40 left-20 z-0"></div>
-        <div className="absolute w-[600px] h-[600px] bg-secondary/20 rounded-full blur-[100px] bottom-20 -right-20 z-0"></div>
-        <div className="bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYgMi42ODYgNiA2cy0yLjY4NiA2LTYgNmMtMy4zMTQgMC02LTIuNjg2LTYtNnMyLjY4Ni02IDYtNiIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utb3BhY2l0eT0iLjA1Ii8+PGNpcmNsZSBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9Ii4wNSIgY3g9IjQwIiBjeT0iMzAiIHI9IjEiLz48Y2lyY2xlIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iLjA1IiBjeD0iMjAiIGN5PSIyMCIgcj0iMSIvPjxjaXJjbGUgZmlsbD0iI2ZmZiIgZmlsbC1vcGFjaXR5PSIuMDUiIGN4PSI0MCIgY3k9IjQwIiByPSIxIi8+PC9nPjwvc3ZnPg==')] absolute inset-0 opacity-10 z-0"></div>
-      </div>
-
+    <section id="analytics" className="relative py-12 md:py-20">
+      <div className="absolute inset-0 bg-gradient-to-b from-blue-50 to-transparent opacity-30 z-0"></div>
+      <div className="absolute left-0 right-0 top-0 h-[500px] bg-primary/5 -z-10"></div>
+      
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-12">
-          <div className="inline-flex items-center mb-4 px-3 py-1 rounded-full text-primary bg-primary/10 backdrop-blur-sm border border-primary/20">
+          <div className="inline-flex items-center mb-4 px-3 py-1 rounded-full text-primary bg-primary/10 border border-primary/20">
             <Activity className="h-4 w-4 mr-2" />
             <span className="text-sm font-medium">Comprehensive Analytics</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 md:mb-5 bg-clip-text text-transparent bg-gradient-to-r from-white via-primary to-white">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 md:mb-5">
             Medical Analytics Dashboard
           </h2>
-          <p className="text-gray-400 max-w-3xl mx-auto text-base md:text-lg px-2">
+          <p className="text-gray-600 max-w-3xl mx-auto text-base md:text-lg px-2">
             Advanced analytics and visualizations of breast cancer data for healthcare professionals, 
             providing insights into demographics, risk factors, treatment outcomes, and more.
           </p>
@@ -359,19 +355,19 @@ export default function MedicalAnalytics() {
 
         <div className="mb-8 flex flex-wrap justify-between items-center">
           <div className="flex flex-wrap gap-2 mb-4 md:mb-0">
-            <Label className="text-gray-400">Last updated: </Label>
-            <span className="text-white">{new Date(data.lastUpdated).toLocaleString()}</span>
+            <Label className="text-gray-500">Last updated: </Label>
+            <span className="text-gray-700">{new Date(data.lastUpdated).toLocaleString()}</span>
           </div>
           <div className="flex flex-wrap gap-2">
-            <Button variant="outline" className="bg-black/30 text-white hover:bg-black/50 border-white/10">
+            <Button variant="outline" className="border-gray-300 hover:bg-gray-50">
               <Download className="h-4 w-4 mr-2" />
               Export Data
             </Button>
-            <Button variant="outline" className="bg-black/30 text-white hover:bg-black/50 border-white/10">
+            <Button variant="outline" className="border-gray-300 hover:bg-gray-50">
               <Share2 className="h-4 w-4 mr-2" />
               Share
             </Button>
-            <Button className="btn-futuristic" onClick={() => refetch()}>
+            <Button variant="default" className="bg-primary hover:bg-primary/90" onClick={() => refetch()}>
               <RefreshCw className="h-4 w-4 mr-2" />
               Refresh
             </Button>
@@ -379,24 +375,24 @@ export default function MedicalAnalytics() {
         </div>
 
         <Tabs defaultValue="overview" className="mb-12" value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid grid-cols-2 md:grid-cols-5 bg-gray-900/70 backdrop-blur-sm border border-gray-800">
-            <TabsTrigger value="overview" className="data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+          <TabsList className="grid grid-cols-2 md:grid-cols-5 w-full bg-gray-100 rounded-lg">
+            <TabsTrigger value="overview" className="data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-sm">
               <Activity className="h-4 w-4 mr-2" />
               Overview
             </TabsTrigger>
-            <TabsTrigger value="demographics" className="data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+            <TabsTrigger value="demographics" className="data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-sm">
               <Users className="h-4 w-4 mr-2" />
               Demographics
             </TabsTrigger>
-            <TabsTrigger value="diagnosis" className="data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+            <TabsTrigger value="diagnosis" className="data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-sm">
               <Zap className="h-4 w-4 mr-2" />
               Diagnosis
             </TabsTrigger>
-            <TabsTrigger value="treatment" className="data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+            <TabsTrigger value="treatment" className="data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-sm">
               <Heart className="h-4 w-4 mr-2" />
               Treatment
             </TabsTrigger>
-            <TabsTrigger value="research" className="data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
+            <TabsTrigger value="research" className="data-[state=active]:bg-white data-[state=active]:text-primary data-[state=active]:shadow-sm">
               <BookOpen className="h-4 w-4 mr-2" />
               Research
             </TabsTrigger>
