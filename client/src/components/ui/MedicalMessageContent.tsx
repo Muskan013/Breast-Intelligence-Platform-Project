@@ -7,11 +7,13 @@ import { BookOpen, X } from 'lucide-react';
 interface MedicalMessageContentProps {
   content: string;
   showGlossary?: boolean;
+  translationEnabled?: boolean;
 }
 
 export default function MedicalMessageContent({ 
   content, 
-  showGlossary = true 
+  showGlossary = true,
+  translationEnabled = true
 }: MedicalMessageContentProps) {
   const [isGlossaryOpen, setIsGlossaryOpen] = useState(false);
   
@@ -27,7 +29,8 @@ export default function MedicalMessageContent({
   
   // Function to render content with interactive terms
   const renderInteractiveContent = () => {
-    if (!hasTerms) {
+    // If translation is disabled or no medical terms found, render plain content
+    if (!translationEnabled || !hasTerms) {
       return <p className="whitespace-pre-wrap">{content}</p>;
     }
     

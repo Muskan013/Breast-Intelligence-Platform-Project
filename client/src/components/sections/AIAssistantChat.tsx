@@ -21,6 +21,7 @@ export default function AIAssistantChat() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [translationEnabled, setTranslationEnabled] = useState(true);
   const recognitionRef = useRef<any>(null);
   
   // Auto-scroll to bottom of messages
@@ -180,6 +181,33 @@ export default function AIAssistantChat() {
               >
                 <RefreshCw className="h-4 w-4" />
               </Button>
+            </div>
+            
+            {/* Medical Term Translation Feature Info */}
+            <div className="mx-4 sm:mx-6 mt-2 mb-2 py-3 px-4 rounded-lg bg-blue-500/10 border border-blue-500/30 text-xs text-blue-200 flex items-start">
+              <div className="rounded-full bg-blue-500/20 p-1 mr-2 mt-0.5">
+                <BookOpen className="h-3 w-3 text-blue-300" />
+              </div>
+              <div className="flex-grow">
+                <div className="flex justify-between items-center mb-1">
+                  <p className="font-medium">Medical Jargon Translator</p>
+                  <div className="flex items-center">
+                    <span className="text-xs mr-2">{translationEnabled ? 'On' : 'Off'}</span>
+                    <button 
+                      onClick={() => setTranslationEnabled(!translationEnabled)}
+                      className={`w-8 h-4 rounded-full relative transition-colors ${translationEnabled ? 'bg-blue-500' : 'bg-gray-600'}`}
+                    >
+                      <span 
+                        className={`absolute top-0.5 w-3 h-3 rounded-full bg-white transition-transform ${translationEnabled ? 'right-0.5' : 'left-0.5'}`}
+                      ></span>
+                    </button>
+                  </div>
+                </div>
+                <p>{translationEnabled 
+                  ? 'All medical terms will be highlighted and clickable. Click on any highlighted term to see its meaning in simple language.' 
+                  : 'Translation is currently disabled. Enable to see simplified explanations of medical terms.'}
+                </p>
+              </div>
             </div>
             
             {/* Chat messages area */}
