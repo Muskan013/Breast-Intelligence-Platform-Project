@@ -1,4 +1,5 @@
 import type { PredictionParams, PredictionResult } from "@/lib/predictionModel";
+import type { MedicalAnalyticsData, ChartData } from "@/hooks/useAnalytics";
 import { apiRequest } from "./queryClient";
 
 /**
