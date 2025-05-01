@@ -151,9 +151,9 @@ async function predictBreastCancer(params: PredictionParams): Promise<Prediction
 // Function to generate AI assistant response using OpenAI
 async function generateOpenAIResponse(message: string): Promise<string> {
   try {
-    // Enhanced system prompt with broader medical knowledge and external question handling
+    // Enhanced system prompt with more empathetic communication style
     const medicalSystemPrompt = `
-    You are BreastCare Predict Medical Assistant, an advanced AI specializing in breast cancer and general medical information.
+    You are BreastCare Predict Medical Assistant, an advanced AI specializing in breast cancer and general medical information. Your primary goal is to be a compassionate and empathetic companion to healthcare professionals and patients.
     
     Primary expertise:
     - Provide comprehensive, evidence-based information about breast cancer detection, diagnosis, treatment options, and research
@@ -165,7 +165,18 @@ async function generateOpenAIResponse(message: string): Promise<string> {
     - Provide factual information about medical research, clinical trials, and emerging treatments
     - Explain medical concepts in clear, accessible language for medical professionals
     
-    Communication approach:
+    Empathetic communication approach:
+    - Communicate with warmth, compassion, and emotional intelligence
+    - Acknowledge fears, concerns, and emotions in user questions
+    - Use supportive language that shows understanding of the emotional impact of medical topics
+    - Begin responses by acknowledging feelings before providing information
+    - Include encouraging statements and positive framing where appropriate
+    - Be conversational and personable, using a friendly, caring tone
+    - Use phrases like "I understand this may be concerning" or "It's natural to feel [emotion]"
+    - Address the human aspect of medical care, not just clinical facts
+    - Apply active listening in your responses by reflecting concerns back to the user
+    
+    Content structure:
     - Be clear, empathetic, and informative in all responses
     - Structure responses with relevant headings and bullet points when appropriate for clarity
     - Provide sources or context for medical information when possible
@@ -180,12 +191,12 @@ async function generateOpenAIResponse(message: string): Promise<string> {
     `;
 
     const response = await openai.chat.completions.create({
-      model: "gpt-4o", // the newest OpenAI model
+      model: "gpt-4o", // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
       messages: [
         { role: "system", content: medicalSystemPrompt },
         { role: "user", content: message }
       ],
-      temperature: 0.7,
+      temperature: 0.8, // Slightly increased for more personable responses
       max_tokens: 1200,
       stream: false
     });
@@ -199,23 +210,23 @@ async function generateOpenAIResponse(message: string): Promise<string> {
 
 // Function to generate AI assistant response, trying multiple providers for resilience
 async function generateAIResponse(message: string): Promise<string> {
-  // Medical knowledge base for fallback responses with BreastCare Predict branding
+  // Medical knowledge base for fallback responses with BreastCare Predict branding and empathetic communication
   const fallbackResponses: Record<string, string> = {
-    "symptoms": "Based on BreastCare Predict's clinical database, early symptoms of breast cancer may include a lump or thickening in the breast tissue, changes in breast size or shape, dimpling of the skin (resembling orange peel), nipple inversion, unusual nipple discharge (especially if bloody), persistent breast pain, swelling in all or part of the breast, or skin irritation. Our research indicates that up to 40% of breast cancers are detected by women who feel a lump, making regular self-examinations and clinical screenings essential for early detection.",
+    "symptoms": "I understand that discussing breast cancer symptoms can be concerning, and it's completely natural to feel worried about potential warning signs. Based on BreastCare Predict's clinical database, early symptoms may include a lump or thickening in the breast tissue, changes in breast size or shape, dimpling of the skin (resembling orange peel), nipple inversion, unusual nipple discharge (especially if bloody), persistent breast pain, swelling in all or part of the breast, or skin irritation. It's reassuring to know that many breast changes are benign, but it's always best to have them evaluated. Our research indicates that up to 40% of breast cancers are detected by women who feel a lump, which reinforces the importance of regular self-examinations and clinical screenings for early detection. Remember, being proactive about your health is empowering, and early detection significantly improves outcomes.",
     
-    "detection": "BreastCare Predict's advanced detection protocols recommend multimodal screening approaches including digital mammograms, clinical breast examinations, and guided self-examinations. Our AI analysis shows that 3D mammography (tomosynthesis) can increase detection rates by 27-50% compared to traditional mammography. For high-risk individuals, we recommend additional screening with breast MRI. Current guidelines suggest annual mammograms for most women starting between ages 40-50, with personalized schedules based on individual risk profiles.",
+    "detection": "I can appreciate that questions about breast cancer detection often come with feelings of uncertainty or anxiety. It's completely normal to have these concerns. BreastCare Predict's advanced detection protocols recommend multimodal screening approaches including digital mammograms, clinical breast examinations, and guided self-examinations. While screening can sometimes feel intimidating, it's encouraging to know that technology continues to improve—our AI analysis shows that 3D mammography (tomosynthesis) can increase detection rates by 27-50% compared to traditional mammography. For high-risk individuals, we recommend additional screening with breast MRI. Current guidelines suggest annual mammograms for most women starting between ages 40-50, with personalized schedules based on individual risk profiles. Remember that screening is a proactive, empowering step you can take for your health, and healthcare providers are there to support you through the process.",
     
-    "treatment": "According to the BreastCare Predict treatment database, modern breast cancer treatments are highly personalized based on tumor molecular profiling, cancer stage, and individual patient factors. Contemporary approaches include precision surgery (lumpectomy or mastectomy with oncoplastic techniques), targeted radiation therapy (including accelerated partial breast irradiation), chemotherapy, hormone therapy (for ER/PR positive cancers), targeted biological therapies (like HER2-targeted treatments), and immunotherapy. Our clinical outcomes analysis shows 5-year survival rates exceeding 90% when cancers are detected at early stages.",
+    "treatment": "I understand that discussing cancer treatments can bring up many emotions—from concern and anxiety to hope for positive outcomes. According to the BreastCare Predict treatment database, modern breast cancer treatments are highly personalized based on tumor molecular profiling, cancer stage, and individual patient factors. This personalized approach means treatment plans are designed specifically for each person's unique situation, which can be reassuring. Contemporary approaches include precision surgery (lumpectomy or mastectomy with oncoplastic techniques), targeted radiation therapy (including accelerated partial breast irradiation), chemotherapy, hormone therapy (for ER/PR positive cancers), targeted biological therapies (like HER2-targeted treatments), and immunotherapy. While the treatment journey can be challenging emotionally and physically, it's encouraging to know that our clinical outcomes analysis shows 5-year survival rates exceeding 90% when cancers are detected at early stages. Throughout this journey, comprehensive support including emotional and psychological care is just as important as medical treatment.",
     
-    "risk": "BreastCare Predict's risk assessment tools analyze multiple factors including age (risk increases after 50), family history (especially first-degree relatives), genetic mutations (particularly BRCA1/BRCA2, TP53, PTEN, and others), personal history of breast conditions, previous radiation exposure, hormonal factors, lifestyle elements (obesity, alcohol consumption), and environmental influences. Our predictive models can help quantify individual risk and guide personalized screening protocols, though it's important to note that approximately 70-80% of breast cancers occur in women with no family history of the disease.",
+    "risk": "I understand that exploring cancer risk factors can bring up feelings of concern or anxiety, which is completely natural. BreastCare Predict's risk assessment tools analyze multiple factors including age (risk increases after 50), family history (especially first-degree relatives), genetic mutations (particularly BRCA1/BRCA2, TP53, PTEN, and others), personal history of breast conditions, previous radiation exposure, hormonal factors, lifestyle elements (obesity, alcohol consumption), and environmental influences. Learning about these factors can feel overwhelming, but it's important to remember that risk factors don't determine destiny. Our predictive models can help quantify individual risk and guide personalized screening protocols, empowering you with knowledge to make informed health decisions. It may be reassuring to know that approximately 70-80% of breast cancers occur in women with no family history of the disease. If you're concerned about your personal risk, speaking with a healthcare provider can help put this information into perspective for your specific situation.",
     
-    "prevention": "While BreastCare Predict research indicates no guaranteed prevention strategy, our risk reduction analysis supports maintaining healthy weight (as obesity may increase risk by 20-40%), regular physical activity (3-4 hours weekly can reduce risk by 10-20%), limiting alcohol consumption, avoiding long-term hormone replacement therapy, breastfeeding when possible, and regular screening. For high-risk individuals identified through our genetic testing protocols, risk-reducing medications (tamoxifen, raloxifene, or aromatase inhibitors) or prophylactic surgery might be considered in consultation with specialist medical teams.",
+    "prevention": "I understand that taking steps to prevent breast cancer can feel both empowering and sometimes overwhelming. It's completely natural to want to do everything possible to protect your health. While BreastCare Predict research indicates no guaranteed prevention strategy, our risk reduction analysis supports several positive lifestyle approaches that benefit overall health while potentially reducing breast cancer risk. These include maintaining healthy weight (as obesity may increase risk by 20-40%), regular physical activity (3-4 hours weekly can reduce risk by 10-20%), limiting alcohol consumption, avoiding long-term hormone replacement therapy, and breastfeeding when possible. Regular screening, while not prevention per se, remains vital for early detection. For high-risk individuals identified through genetic testing protocols, additional options like risk-reducing medications (tamoxifen, raloxifene, or aromatase inhibitors) or prophylactic surgery might be considered in consultation with specialist medical teams. Remember that each small, positive change you make for your health matters, and it's never too late to adopt health-promoting habits.",
     
-    "research": "BreastCare Predict's research division continuously analyzes emerging clinical trials, including promising developments in immunotherapy, circulating tumor DNA analysis for early detection and recurrence monitoring, de-escalation of treatments for early-stage cancers, novel targeted therapies for triple-negative and metastatic breast cancers, and artificial intelligence applications in diagnostic imaging to improve detection accuracy and reduce unnecessary biopsies.",
+    "research": "I understand that staying informed about the latest research developments can provide hope and reassurance when facing concerns about breast cancer. BreastCare Predict's research division continuously analyzes emerging clinical trials, including promising developments in immunotherapy, circulating tumor DNA analysis for early detection and recurrence monitoring, de-escalation of treatments for early-stage cancers, novel targeted therapies for triple-negative and metastatic breast cancers, and artificial intelligence applications in diagnostic imaging to improve detection accuracy and reduce unnecessary biopsies. It's encouraging to see how rapidly the field is advancing, with new approaches constantly being developed to improve care, reduce side effects, and enhance quality of life for patients. While the scientific details can sometimes feel complex, each research breakthrough represents a step forward in our collective effort to improve outcomes for people affected by breast cancer. This ongoing progress offers real hope for the future of breast cancer prevention, detection, and treatment.",
     
-    "screening": "BreastCare Predict's screening guidelines incorporate the latest medical consensus while recognizing that recommendations may vary by country and individual risk factors. For average-risk women, we analyze annual mammography starting at age 40 or 45 (based on personal preference and risk tolerance), clinical breast exams every 1-3 years from ages 25-39 and annually thereafter, and optional 3D mammography which provides clearer images particularly for women with dense breast tissue. Our AI model indicates personalized screening based on comprehensive risk assessment yields optimal outcomes.",
+    "screening": "I understand that navigating breast cancer screening recommendations can sometimes feel confusing or anxiety-provoking, and that's completely normal. BreastCare Predict's screening guidelines incorporate the latest medical consensus while recognizing that recommendations may vary by country and individual risk factors. For average-risk women, we analyze annual mammography starting at age 40 or 45 (based on personal preference and risk tolerance), clinical breast exams every 1-3 years from ages 25-39 and annually thereafter, and optional 3D mammography which provides clearer images particularly for women with dense breast tissue. While the thought of screening can cause anxiety for some people, it's helpful to remember that these tests are powerful tools for early detection, when treatment is most effective. Our AI model indicates personalized screening based on comprehensive risk assessment yields optimal outcomes. Remember that healthcare providers understand these concerns and are there to support you through the screening process, answering questions and providing reassurance along the way.",
     
-    "default": "According to BreastCare Predict's comprehensive clinical database, breast cancer is the most common cancer among women worldwide. Our research emphasizes several critical facts: early detection significantly improves outcomes, with 5-year survival rates over 90% for localized disease; treatments have advanced dramatically, allowing more targeted, less invasive approaches; genetic testing can identify high-risk individuals who may benefit from enhanced surveillance; and comprehensive support resources (including psychological support, fertility preservation options, and survivorship programs) are essential components of optimal care. Our platform integrates the latest evidence-based approaches to support healthcare professionals in delivering personalized breast cancer care."
+    "default": "I understand that seeking information about breast cancer can bring up a range of emotions—from concern and anxiety to a desire for knowledge and reassurance. According to BreastCare Predict's comprehensive clinical database, breast cancer is the most common cancer among women worldwide, but there's also much reason for hope. Our research emphasizes several encouraging facts: early detection significantly improves outcomes, with 5-year survival rates over 90% for localized disease; treatments have advanced dramatically in recent years, allowing more targeted, less invasive approaches with fewer side effects; genetic testing can identify high-risk individuals who may benefit from enhanced surveillance or preventive measures; and comprehensive support resources (including psychological support, fertility preservation options, and survivorship programs) are essential components of optimal care. While this information can seem overwhelming, remember that each person's journey is unique, and healthcare providers are there to offer not just medical expertise but also compassionate guidance. Our platform integrates the latest evidence-based approaches to support healthcare professionals in delivering personalized breast cancer care that addresses both physical and emotional wellbeing."
   };
 
   try {
@@ -234,9 +245,9 @@ async function generateAIResponse(message: string): Promise<string> {
         // Create medical assistant system prompt with the correct model name for version 0.24.1
         const model = geminiAI.getGenerativeModel({ model: "gemini-pro" });
         
-        // Create enhanced medical context prompt with broader capabilities
+        // Create enhanced medical context prompt with more empathetic communication style
         const prompt = `
-        You are BreastCare Predict Medical Assistant, an advanced AI with both specialized and general medical knowledge.
+        You are BreastCare Predict Medical Assistant, an advanced AI with both specialized and general medical knowledge. Your primary goal is to be a compassionate and empathetic companion to healthcare professionals and patients.
         
         Primary expertise:
         - Provide comprehensive information about breast cancer detection, diagnosis, treatment, and research
@@ -248,8 +259,19 @@ async function generateAIResponse(message: string): Promise<string> {
         - Provide factual information about research, clinical trials, and emerging treatments
         - Explain medical concepts in clear, accessible language for medical professionals
         
-        Communication approach:
-        - Be clear, empathetic, and informative
+        Empathetic communication approach:
+        - Communicate with warmth, compassion, and emotional intelligence
+        - Acknowledge fears, concerns, and emotions in user questions
+        - Use supportive language that shows understanding of the emotional impact of medical topics
+        - Begin responses by acknowledging feelings before providing information
+        - Include encouraging statements and positive framing where appropriate
+        - Be conversational and personable, using a friendly, caring tone
+        - Use phrases like "I understand this may be concerning" or "It's natural to feel [emotion]"
+        - Address the human aspect of medical care, not just clinical facts
+        - Apply active listening in your responses by reflecting concerns back to the user
+        
+        Content structure:
+        - Be clear, empathetic, and informative in all responses
         - Structure responses with headings and bullet points when appropriate
         - Add value with relevant information beyond the direct question
         
