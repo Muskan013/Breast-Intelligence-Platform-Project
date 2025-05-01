@@ -7,6 +7,7 @@ import { ZodError } from "zod";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import OpenAI from "openai";
 import multer from "multer";
+import { generatePredictionReport, generateMedicalInfoReport } from "./pdfGenerator";
 
 // Load API keys from environment variables
 const geminiApiKey = process.env.GEMINI_API_KEY || "dummy-key-for-development";
@@ -514,6 +515,46 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching chat history:", error);
       res.status(500).json({ error: "Failed to fetch chat history" });
+    }
+  });
+
+  // Generate PDF prediction report
+  app.post("/api/reports/prediction", async (req: Request, res: Response) => {
+    try {
+      const { params, result, patientName, doctorName } = req.body;
+      
+      if (!params || !result) {
+        return res.status(400).json({ error: "Missing required prediction data" });
+      }
+      
+      // Set response headers for PDF download
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', `attachment; filename="prediction-report-${Date.now()}.pdf"`);
+      
+      // Generate and stream the PDF
+      await generatePredictionReport(res, params, result, patientName, doctorName);
+      
+    } catch (error) {
+      console.error("Error generating prediction report:", error);
+      res.status(500).json({ error: "Failed to generate PDF report" });
+    }
+  });
+  
+  // Generate PDF medical information report
+  app.post("/api/reports/medical-info", async (req: Request, res: Response) => {
+    try {
+      const { topic, patientName, doctorName } = req.body;
+      
+      // Set response headers for PDF download
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', `attachment; filename="medical-info-${topic || 'general'}-${Date.now()}.pdf"`);
+      
+      // Generate and stream the PDF
+      await generateMedicalInfoReport(res, topic, patientName, doctorName);
+      
+    } catch (error) {
+      console.error("Error generating medical information report:", error);
+      res.status(500).json({ error: "Failed to generate PDF report" });
     }
   });
 

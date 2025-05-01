@@ -1,8 +1,11 @@
-import { PredictionResult } from "@/lib/predictionModel";
-import { CheckCircle2, AlertCircle, BadgeCheck, Zap, Shield, Activity, HeartPulse, ScanSearch } from "lucide-react";
+import { PredictionResult, PredictionParams } from "@/lib/predictionModel";
+import { CheckCircle2, AlertCircle, BadgeCheck, Zap, Shield, Activity, HeartPulse, ScanSearch, FileText, Download } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { generatePredictionReport } from "@/lib/pdfReportService";
+import { useState } from "react";
 
 interface PredictionResultsProps {
   result: PredictionResult | null;
@@ -10,9 +13,39 @@ interface PredictionResultsProps {
 }
 
 export default function PredictionResults({ result, isLoading }: PredictionResultsProps) {
+  // State for PDF generation loading
+  const [isPdfGenerating, setIsPdfGenerating] = useState(false);
+  
   // Convert probability to percentage
   const formatPercentage = (value: number) => {
     return `${Math.round(value * 100)}%`;
+  };
+  
+  // Handle PDF report generation
+  const handleGenerateReport = async () => {
+    if (!result) return;
+    
+    try {
+      setIsPdfGenerating(true);
+      
+      // Get parameters from default values if not available
+      const params: PredictionParams = {
+        cellSize: 5,
+        cellShape: 5,
+        marginalAdhesion: 5,
+        epithelialSize: 5,
+        bareNuclei: 5,
+        blandChromatin: 5,
+        normalNucleoli: 5,
+        mitoses: 5
+      };
+      
+      await generatePredictionReport(params, result);
+    } catch (error) {
+      console.error('Failed to generate PDF report:', error);
+    } finally {
+      setIsPdfGenerating(false);
+    }
   };
 
   // Generate gauge chart configurations
@@ -257,6 +290,28 @@ export default function PredictionResults({ result, isLoading }: PredictionResul
           </div>
         </AlertDescription>
       </Alert>
+      
+      {/* PDF Report Generation Button */}
+      <div className="mt-6 flex justify-center">
+        <Button 
+          variant="outline" 
+          className="bg-black/30 backdrop-blur-sm border-primary/40 hover:bg-primary/20 text-white gap-2 py-5"
+          onClick={handleGenerateReport}
+          disabled={isPdfGenerating}
+        >
+          {isPdfGenerating ? (
+            <>
+              <div className="h-4 w-4 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+              Generating PDF...
+            </>
+          ) : (
+            <>
+              <FileText className="h-4 w-4 text-primary" />
+              Generate PDF Report
+            </>
+          )}
+        </Button>
+      </div>
 
       <div className="mt-auto pt-4 border-t border-white/10 text-center text-xs text-gray-400 font-mono">
         <p>ML MODEL: WISCONSIN-BRC-2025 | QUANTUM PRECISION RATING: 99.7%<br />
