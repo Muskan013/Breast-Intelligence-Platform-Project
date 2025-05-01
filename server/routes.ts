@@ -558,6 +558,179 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get comprehensive medical analytics data
+  app.get("/api/analytics", async (req: Request, res: Response) => {
+    try {
+      // In a real application, this would come from a database
+      // For demonstration purposes, we're using predefined data
+      
+      // Age distribution data
+      const ageDistribution = {
+        labels: ['20-30', '31-40', '41-50', '51-60', '61-70', '71-80', '81+'],
+        datasets: [
+          {
+            name: 'Benign Cases',
+            data: [35, 72, 105, 143, 98, 65, 42]
+          },
+          {
+            name: 'Malignant Cases',
+            data: [8, 27, 63, 89, 115, 87, 54]
+          }
+        ]
+      };
+      
+      // Risk factor correlation data
+      const riskFactorCorrelation = {
+        labels: ['Family History', 'Age > 50', 'Dense Breast Tissue', 'Previous Radiation', 'Genetic Mutations', 'Hormone Replacement', 'High BMI'],
+        datasets: [
+          {
+            name: 'Correlation Strength',
+            data: [0.78, 0.82, 0.65, 0.58, 0.89, 0.62, 0.47]
+          }
+        ]
+      };
+      
+      // Survival rate data
+      const survivalRates = {
+        labels: ['Stage 0', 'Stage I', 'Stage II', 'Stage III', 'Stage IV'],
+        datasets: [
+          {
+            name: '5-Year Survival Rate',
+            data: [99, 95, 85, 72, 27]
+          }
+        ]
+      };
+      
+      // Treatment efficacy data
+      const treatmentEfficacy = {
+        labels: ['Surgery Only', 'Surgery + Radiation', 'Surgery + Chemo', 'Surgery + Radiation + Chemo', 'Hormone Therapy'],
+        datasets: [
+          {
+            name: 'Recurrence Rate (%)',
+            data: [22, 16, 14, 8, 12]
+          },
+          {
+            name: 'Average Recovery Time (months)',
+            data: [3, 6, 9, 12, 4]
+          }
+        ]
+      };
+      
+      // Diagnostic accuracy comparison
+      const diagnosticAccuracy = {
+        labels: ['Mammography', 'Ultrasound', 'MRI', 'Biopsy', 'AI-Based Analysis'],
+        datasets: [
+          {
+            name: 'Sensitivity (%)',
+            data: [78, 83, 91, 98, 89]
+          },
+          {
+            name: 'Specificity (%)',
+            data: [90, 88, 92, 99, 94]
+          }
+        ]
+      };
+      
+      // Geographic distribution
+      const geographicDistribution = {
+        labels: ['North America', 'Europe', 'Asia', 'Africa', 'Australia', 'South America'],
+        datasets: [
+          {
+            name: 'Incidence Rate (per 100,000)',
+            data: [124, 106, 52, 41, 94, 72]
+          },
+          {
+            name: 'Mortality Rate (per 100,000)',
+            data: [22, 19, 13, 17, 15, 16]
+          }
+        ]
+      };
+      
+      // Biomarker analysis data
+      const biomarkerAnalysis = {
+        labels: ['ER+/PR+/HER2-', 'ER+/PR+/HER2+', 'ER+/PR-/HER2-', 'ER+/PR-/HER2+', 'ER-/PR+/HER2-', 'ER-/PR+/HER2+', 'ER-/PR-/HER2+', 'Triple Negative'],
+        datasets: [
+          {
+            name: 'Prevalence (%)',
+            data: [41, 10, 14, 6, 4, 2, 8, 15]
+          }
+        ]
+      };
+      
+      // Multi-year trend data
+      const yearlyTrends = {
+        labels: ['2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025'],
+        datasets: [
+          {
+            name: 'New Cases (thousands)',
+            data: [245, 252, 248, 253, 260, 255, 253, 247, 242, 234]
+          },
+          {
+            name: 'Mortality (thousands)',
+            data: [41, 40, 39, 38, 36, 35, 33, 32, 30, 27]
+          },
+          {
+            name: 'Survival Rate (%)',
+            data: [83, 84, 85, 86, 87, 88, 89, 90, 91, 92]
+          }
+        ]
+      };
+      
+      // Feature importance in prediction model
+      const featureImportance = {
+        labels: ['Cell Size', 'Cell Shape', 'Marginal Adhesion', 'Epithelial Size', 'Bare Nuclei', 'Bland Chromatin', 'Normal Nucleoli', 'Mitoses'],
+        datasets: [
+          {
+            name: 'Importance Score',
+            data: [0.76, 0.89, 0.72, 0.65, 0.91, 0.68, 0.58, 0.62]
+          }
+        ]
+      };
+      
+      // Treatment side effects comparison
+      const sideEffectsComparison = {
+        labels: ['Fatigue', 'Nausea', 'Hair Loss', 'Pain', 'Swelling', 'Skin Changes', 'Infection Risk', 'Lymphedema', 'Cognitive Issues'],
+        datasets: [
+          {
+            name: 'Surgery (%)',
+            data: [45, 10, 0, 80, 65, 30, 25, 20, 5]
+          },
+          {
+            name: 'Radiation (%)',
+            data: [80, 15, 15, 40, 55, 90, 15, 30, 10]
+          },
+          {
+            name: 'Chemotherapy (%)',
+            data: [95, 85, 95, 55, 40, 45, 85, 20, 65]
+          },
+          {
+            name: 'Hormone Therapy (%)',
+            data: [70, 25, 10, 35, 25, 10, 5, 5, 35]
+          }
+        ]
+      };
+      
+      // Return comprehensive analytics data
+      res.json({
+        ageDistribution,
+        riskFactorCorrelation,
+        survivalRates,
+        treatmentEfficacy,
+        diagnosticAccuracy,
+        geographicDistribution,
+        biomarkerAnalysis,
+        yearlyTrends,
+        featureImportance,
+        sideEffectsComparison,
+        lastUpdated: new Date().toISOString()
+      });
+      
+    } catch (error) {
+      console.error("Error generating analytics data:", error);
+      res.status(500).json({ error: "Failed to retrieve analytics data" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

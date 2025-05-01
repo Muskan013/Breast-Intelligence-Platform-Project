@@ -5,6 +5,7 @@ import PredictionSection from "@/components/sections/PredictionSection";
 import FeatureHighlights from "@/components/sections/FeatureHighlights";
 import EducationalResources from "@/components/sections/EducationalResources";
 import AIAssistantChat from "@/components/sections/AIAssistantChat";
+import MedicalAnalytics from "@/components/sections/MedicalAnalytics";
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
         <PredictionSection />
         <FeatureHighlights />
         <EducationalResources />
+        <MedicalAnalytics />
         <AIAssistantChat />
       </main>
       <Footer />
