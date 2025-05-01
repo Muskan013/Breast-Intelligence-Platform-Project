@@ -24,6 +24,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { Link } from "wouter";
 import { 
   PieChart as PieChartIcon, 
   BarChart as BarChartIcon, 
@@ -37,7 +38,10 @@ import {
   RefreshCw,
   Download,
   Share2,
-  Zap
+  Zap,
+  AlertTriangle,
+  RotateCcw,
+  Link as LinkIcon
 } from "lucide-react";
 
 // Custom colors for charts - matched to the site's color scheme
@@ -327,10 +331,12 @@ export default function MedicalAnalytics() {
         <h3 className="text-xl font-bold text-gray-800 mb-2">Failed to load analytics</h3>
         <p className="text-gray-600 mb-6 text-center max-w-md">There was an error fetching the medical analytics data. Please try again later.</p>
         <div className="flex gap-3">
-          <Button variant="outline" className="border-gray-300">
-            <RotateCcw className="h-4 w-4 mr-2" />
-            Go back
-          </Button>
+          <Link href="/">
+            <Button variant="outline" className="border-gray-300">
+              <RotateCcw className="h-4 w-4 mr-2" />
+              Go back
+            </Button>
+          </Link>
           <Button onClick={() => refetch()} variant="default" className="bg-primary hover:bg-primary/90">
             <RefreshCw className="h-4 w-4 mr-2" />
             Retry
@@ -366,11 +372,58 @@ export default function MedicalAnalytics() {
             <span className="text-gray-700">{new Date(data.lastUpdated).toLocaleString()}</span>
           </div>
           <div className="flex flex-wrap gap-2">
-            <Button variant="outline" className="border-gray-300 hover:bg-gray-50">
+            <Button 
+              variant="outline" 
+              className="border-gray-300 hover:bg-gray-50"
+              onClick={() => {
+                // Create CSV data from analytics
+                const csvData = [
+                  // Headers
+                  ['Category', ...data.ageDistribution.labels],
+                  // Data rows
+                  ...data.ageDistribution.datasets.map(ds => [ds.name, ...ds.data]),
+                  ...data.survivalRates.datasets.map(ds => [ds.name, ...ds.data]),
+                  ...data.riskFactorCorrelation.datasets.map(ds => [ds.name, ...ds.data])
+                ].map(row => row.join(',')).join('\n');
+                
+                // Create a blob and download
+                const blob = new Blob([csvData], { type: 'text/csv' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.setAttribute('href', url);
+                a.setAttribute('download', `breastcare-analytics-${new Date().toISOString().slice(0,10)}.csv`);
+                a.click();
+                URL.revokeObjectURL(url);
+              }}
+            >
               <Download className="h-4 w-4 mr-2" />
               Export Data
             </Button>
-            <Button variant="outline" className="border-gray-300 hover:bg-gray-50">
+            <Button 
+              variant="outline" 
+              className="border-gray-300 hover:bg-gray-50"
+              onClick={() => {
+                // Create shareable URL with current tab
+                const url = `${window.location.origin}${window.location.pathname}?tab=${activeTab}`;
+                
+                // Try to use the Web Share API if available
+                if (navigator.share) {
+                  navigator.share({
+                    title: 'BreastCare Predict Analytics',
+                    text: 'Check out these breast cancer analytics insights!',
+                    url: url,
+                  }).catch(err => {
+                    // Fallback to copy to clipboard
+                    navigator.clipboard.writeText(url);
+                    alert('Link copied to clipboard!');
+                  });
+                } else {
+                  // Fallback to copy to clipboard
+                  navigator.clipboard.writeText(url);
+                  alert('Link copied to clipboard!');
+                }
+              }}
+            >
               <Share2 className="h-4 w-4 mr-2" />
               Share
             </Button>
