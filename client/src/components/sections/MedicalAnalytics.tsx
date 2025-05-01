@@ -312,7 +312,8 @@ export default function MedicalAnalytics() {
     return (
       <div className="w-full flex flex-col items-center justify-center py-20">
         <div className="w-16 h-16 rounded-full border-4 border-primary border-r-transparent animate-spin"></div>
-        <p className="mt-4 text-gray-500">Loading analytics data...</p>
+        <p className="mt-4 text-gray-600">Loading analytics data...</p>
+        <p className="text-xs text-gray-400 mt-2">Please wait while we prepare your medical analytics dashboard</p>
       </div>
     );
   }
@@ -320,15 +321,21 @@ export default function MedicalAnalytics() {
   if (isError || !data) {
     return (
       <div className="w-full flex flex-col items-center justify-center py-20">
-        <div className="w-20 h-20 rounded-full bg-red-500/20 flex items-center justify-center mb-4">
-          <Zap className="h-10 w-10 text-red-500" />
+        <div className="w-20 h-20 rounded-full bg-red-500/10 flex items-center justify-center mb-4 border border-red-200">
+          <AlertTriangle className="h-10 w-10 text-red-500" />
         </div>
         <h3 className="text-xl font-bold text-gray-800 mb-2">Failed to load analytics</h3>
         <p className="text-gray-600 mb-6 text-center max-w-md">There was an error fetching the medical analytics data. Please try again later.</p>
-        <Button onClick={() => refetch()} variant="default" className="bg-primary hover:bg-primary/90">
-          <RefreshCw className="h-4 w-4 mr-2" />
-          Retry
-        </Button>
+        <div className="flex gap-3">
+          <Button variant="outline" className="border-gray-300">
+            <RotateCcw className="h-4 w-4 mr-2" />
+            Go back
+          </Button>
+          <Button onClick={() => refetch()} variant="default" className="bg-primary hover:bg-primary/90">
+            <RefreshCw className="h-4 w-4 mr-2" />
+            Retry
+          </Button>
+        </div>
       </div>
     );
   }
