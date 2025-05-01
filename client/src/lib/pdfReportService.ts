@@ -94,6 +94,48 @@ export async function generateMedicalInfoReport(
 }
 
 /**
+ * Generate and download an analytics data report PDF
+ * 
+ * @param analyticsData The medical analytics data to include in the report
+ * @param chartType Optional specific chart type to include (if not provided, all charts are included)
+ * @param doctorName Optional doctor name for report attribution
+ */
+export async function generateAnalyticsReport(
+  analyticsData: MedicalAnalyticsData,
+  chartType?: string,
+  doctorName?: string
+): Promise<void> {
+  try {
+    // Use fetch directly to get the PDF blob
+    const response = await fetch('/api/reports/analytics', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ 
+        analyticsData, 
+        chartType, 
+        doctorName: doctorName || 'Healthcare Professional'
+      }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(`Error generating analytics report: ${errorText}`);
+    }
+
+    // Get the PDF blob from the response
+    const blob = await response.blob();
+    
+    // Create a download link and trigger the download
+    triggerDownload(blob, `analytics-report-${chartType || 'full'}-${Date.now()}.pdf`);
+  } catch (error) {
+    console.error('Error generating analytics report:', error);
+    throw error;
+  }
+}
+
+/**
  * Helper function to trigger a file download from a blob
  */
 function triggerDownload(blob: Blob, filename: string): void {

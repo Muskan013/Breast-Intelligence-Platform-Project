@@ -4,6 +4,31 @@ import { Request, Response } from "express";
 import fs from "fs";
 import path from "path";
 
+// Interface definitions for analytics data
+interface AnalyticsDataset {
+  name: string;
+  data: number[];
+}
+
+interface ChartData {
+  labels: string[];
+  datasets: AnalyticsDataset[];
+}
+
+interface MedicalAnalyticsData {
+  ageDistribution: ChartData;
+  riskFactorCorrelation: ChartData;
+  survivalRates: ChartData;
+  treatmentEfficacy: ChartData;
+  diagnosticAccuracy: ChartData;
+  geographicDistribution: ChartData;
+  biomarkerAnalysis: ChartData;
+  yearlyTrends: ChartData;
+  featureImportance: ChartData;
+  sideEffectsComparison: ChartData;
+  lastUpdated: string;
+}
+
 /**
  * Generates a PDF report for a breast cancer prediction
  */
@@ -591,4 +616,262 @@ function getGeneralInformation() {
       ]
     }
   ];
+}
+/**
+ * Generates a PDF report for medical analytics data
+ */
+export async function generateAnalyticsReport(
+  res: Response,
+  analyticsData: MedicalAnalyticsData,
+  chartType?: string,
+  doctorName: string = "Healthcare Professional"
+): Promise<void> {
+  // Create a new PDF document
+  const doc = new PDFDocument({
+    size: "A4",
+    margins: {
+      top: 50,
+      bottom: 50,
+      left: 72,
+      right: 72
+    },
+    info: {
+      Title: "BreastCare Predict - Medical Analytics Report",
+      Author: "BreastCare Predict AI Assistant",
+      Subject: "Medical Analytics Report",
+      Keywords: "breast cancer, analytics, statistics, data, medical report",
+      CreationDate: new Date()
+    }
+  });
+
+  // Pipe the PDF document to the response
+  doc.pipe(res);
+
+  // Load and embed logo
+  const logoPath = path.join(__dirname, "../assets/logo.png");
+  try {
+    if (fs.existsSync(logoPath)) {
+      doc.image(logoPath, 72, 50, { width: 150 });
+    }
+  } catch (error) {
+    console.error("Error loading logo:", error);
+  }
+
+  // Title
+  doc.fontSize(24)
+     .font("Helvetica-Bold")
+     .text("BreastCare Predict", 250, 60)
+     .fontSize(16)
+     .font("Helvetica")
+     .text("Medical Analytics Report", 250, 90);
+
+  // Date and Reference
+  doc.fontSize(10)
+     .text(`Date: ${new Date().toLocaleDateString()}`, 72, 150)
+     .text(`Reference: MAR-${Date.now().toString().slice(-8)}`, 72, 165)
+     .text(`Generated for: ${doctorName}`, 72, 180)
+     .text(`Data last updated: ${new Date(analyticsData.lastUpdated).toLocaleString()}`, 72, 195);
+
+  // Report header
+  doc.moveDown(2)
+     .fontSize(16)
+     .font("Helvetica-Bold")
+     .fillColor("#1E88E5")
+     .text("BREAST CANCER ANALYTICS", { align: "center" })
+     .moveDown(1)
+     .fillColor("#000000");
+
+  // Determine which charts to include
+  const chartsToInclude = chartType ? 
+    // If specific chart type is specified, only include that one
+    [{ type: chartType, title: chartType.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase()), data: analyticsData[chartType as keyof MedicalAnalyticsData] as ChartData }] : 
+    // Otherwise include all charts
+    [
+      { type: 'ageDistribution', title: 'Age Distribution', data: analyticsData.ageDistribution },
+      { type: 'riskFactorCorrelation', title: 'Risk Factor Correlation', data: analyticsData.riskFactorCorrelation },
+      { type: 'survivalRates', title: 'Survival Rates', data: analyticsData.survivalRates },
+      { type: 'treatmentEfficacy', title: 'Treatment Efficacy', data: analyticsData.treatmentEfficacy },
+      { type: 'diagnosticAccuracy', title: 'Diagnostic Accuracy', data: analyticsData.diagnosticAccuracy },
+    ];
+
+  // Add each chart data as a table
+  chartsToInclude.forEach((chart, chartIndex) => {
+    // Chart title with humanized formatting 
+    const title = chart.title || chart.type.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+    
+    doc.fontSize(14)
+       .font("Helvetica-Bold")
+       .text(title, { underline: true })
+       .moveDown(1);
+
+    // Create a table for this chart data
+    const tableTop = doc.y;
+    const tableLeft = 72;
+    const labelWidth = 150;
+    const dataWidth = 60;
+    const rowHeight = 25;
+    
+    // Table header with labels
+    doc.fontSize(10)
+       .font("Helvetica-Bold")
+       .rect(tableLeft, tableTop, labelWidth, rowHeight).fill("#f0f0f0").stroke();
+       
+    doc.fillColor("#000000")
+       .text("Category", tableLeft + 5, tableTop + 7);
+    
+    // Add dataset column headers
+    chart.data.datasets.forEach((dataset, i) => {
+      const colX = tableLeft + labelWidth + (i * dataWidth);
+      doc.rect(colX, tableTop, dataWidth, rowHeight).fill("#f0f0f0").stroke();
+      doc.text(dataset.name, colX + 5, tableTop + 7, { width: dataWidth - 10, align: "center" });
+    });
+    
+    // Table rows with data
+    chart.data.labels.forEach((label, rowIndex) => {
+      const rowY = tableTop + (rowIndex + 1) * rowHeight;
+      const fillColor = rowIndex % 2 === 0 ? "#ffffff" : "#f5f5f5";
+      
+      // Label column
+      doc.rect(tableLeft, rowY, labelWidth, rowHeight).fill(fillColor).stroke();
+      doc.font("Helvetica")
+         .text(label, tableLeft + 5, rowY + 7);
+      
+      // Data columns
+      chart.data.datasets.forEach((dataset, colIndex) => {
+        const colX = tableLeft + labelWidth + (colIndex * dataWidth);
+        doc.rect(colX, rowY, dataWidth, rowHeight).fill(fillColor).stroke();
+        
+        // Format the number based on what type of data it is
+        let displayValue = '';
+        const value = dataset.data[rowIndex];
+        
+        if (chart.type.includes('Rate') || chart.type.includes('Correlation')) {
+          // For rates and correlations, show as percentage or decimal
+          displayValue = value <= 1 ? (value * 100).toFixed(1) + '%' : value.toFixed(1) + '%';
+        } else {
+          // For counts or other metrics
+          displayValue = value.toString();
+        }
+        
+        doc.text(displayValue, colX + 5, rowY + 7, { width: dataWidth - 10, align: "center" });
+      });
+    });
+    
+    // Add interpretation for this chart
+    doc.moveDown(1.5)
+       .fontSize(12)
+       .font("Helvetica-Bold")
+       .text("Key Observations:", { continued: false });
+      
+    doc.fontSize(11)
+       .font("Helvetica")
+       .moveDown(0.5);
+       
+    // Add specific interpretations based on chart type
+    switch(chart.type) {
+      case 'ageDistribution':
+        doc.text("• Breast cancer incidence increases significantly after age 40");
+        doc.moveDown(0.3);
+        doc.text("• The highest number of malignant cases occurs in the 61-70 age group");
+        doc.moveDown(0.3);
+        doc.text("• Regular screening is especially important for women over 50");
+        break;
+        
+      case 'riskFactorCorrelation':
+        doc.text("• Genetic mutations show the strongest correlation with breast cancer risk");
+        doc.moveDown(0.3);
+        doc.text("• Age over 50 and family history are significant risk factors");
+        doc.moveDown(0.3);
+        doc.text("• Modifiable factors like BMI show lower but still important correlations");
+        break;
+        
+      case 'survivalRates':
+        doc.text("• Early detection significantly improves survival rates");
+        doc.moveDown(0.3);
+        doc.text("• 5-year survival rates drop dramatically for advanced stages");
+        doc.moveDown(0.3);
+        doc.text("• Stage 0 and Stage I have excellent prognosis with proper treatment");
+        break;
+        
+      case 'treatmentEfficacy':
+        doc.text("• Combination therapies show lower recurrence rates than single modalities");
+        doc.moveDown(0.3);
+        doc.text("• More comprehensive treatments generally require longer recovery times");
+        doc.moveDown(0.3);
+        doc.text("• Hormone therapy shows good efficacy with relatively short recovery time");
+        break;
+        
+      case 'diagnosticAccuracy':
+        doc.text("• Biopsy remains the gold standard for breast cancer diagnosis");
+        doc.moveDown(0.3);
+        doc.text("• MRI offers higher sensitivity than mammography or ultrasound");
+        doc.moveDown(0.3);
+        doc.text("• AI-based analysis shows promising accuracy metrics");
+        break;
+        
+      default:
+        doc.text("• This data provides valuable insights for clinical decision-making");
+        doc.moveDown(0.3);
+        doc.text("• Consider these statistics alongside individual patient factors");
+    }
+    
+    // Add a separator between charts (except for the last one)
+    if (chartIndex < chartsToInclude.length - 1) {
+      doc.moveDown(2);
+      doc.moveTo(72, doc.y)
+         .lineTo(523, doc.y)
+         .stroke()
+         .moveDown(1);
+    }
+  });
+
+  // Methodology section
+  doc.moveDown(2)
+     .fontSize(14)
+     .font("Helvetica-Bold")
+     .text("Data Methodology", { underline: true })
+     .moveDown(1);
+
+  doc.fontSize(11)
+     .font("Helvetica")
+     .text("This report contains statistical data compiled from multiple peer-reviewed studies and clinical databases. The analytics presented here represent aggregated data from a diverse patient population and should be interpreted in conjunction with clinical expertise and individual patient considerations.");
+  
+  // Disclaimer
+  doc.moveDown(2)
+     .fontSize(10)
+     .font("Helvetica-Oblique")
+     .fillColor("#666666")
+     .text("DISCLAIMER: This analytics report is generated for healthcare professionals only. The statistical data provided should be used as supplementary information and not as a replacement for clinical judgment. Patient-specific factors should always be considered when applying these population-level statistics to individual cases.");
+
+  // Footer with page numbers
+  const totalPages = doc.bufferedPageRange().count;
+  for (let i = 0; i < totalPages; i++) {
+    doc.switchToPage(i);
+    
+    // Add footer line
+    doc.moveTo(72, 760)
+       .lineTo(523, 760)
+       .stroke();
+       
+    // Add page number
+    doc.fontSize(10)
+       .text(
+         `Page ${i + 1} of ${totalPages}`,
+         72,
+         770,
+         { align: "center", width: 451 }
+       );
+       
+    // Add copyright text
+    doc.fontSize(8)
+       .text(
+         `© ${new Date().getFullYear()} BreastCare Predict. All rights reserved.`,
+         72,
+         785,
+         { align: "center", width: 451 }
+       );
+  }
+
+  // Finalize the PDF and end the stream
+  doc.end();
 }

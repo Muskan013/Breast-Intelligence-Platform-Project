@@ -557,6 +557,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ error: "Failed to generate PDF report" });
     }
   });
+  
+  // Analytics report endpoint
+  app.post("/api/reports/analytics", async (req: Request, res: Response) => {
+    try {
+      const { analyticsData, chartType, doctorName } = req.body;
+      
+      // Set response headers for PDF download
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', `attachment; filename="analytics-report-${chartType || 'full'}-${Date.now()}.pdf"`);
+      
+      // Generate and stream the PDF
+      await generateAnalyticsReport(res, analyticsData, chartType, doctorName);
+      
+    } catch (error) {
+      console.error("Error generating analytics report:", error);
+      res.status(500).json({ error: "Failed to generate PDF report" });
+    }
+  });
 
   // Get comprehensive medical analytics data
   app.get("/api/analytics", async (req: Request, res: Response) => {
