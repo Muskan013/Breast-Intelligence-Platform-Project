@@ -2,6 +2,60 @@ import React, { useState, useRef, useEffect } from 'react';
 import { findTermDefinition, MedicalTermDefinition } from '@/lib/medicalTranslator';
 import { BookOpen } from 'lucide-react';
 
+/**
+ * Converts medical definitions into simple patient-friendly language
+ * @param termDefinition The medical term definition to simplify
+ * @returns A simplified version of the definition using everyday language
+ */
+function getSimplifiedDefinition(termDefinition: MedicalTermDefinition): string {
+  // Simple transformation patterns for medical terminology
+  const simplifications: Record<string, string> = {
+    carcinoma: "cancer cells",
+    metastasis: "cancer spreading",
+    biopsy: "tissue sample test",
+    malignant: "cancerous",
+    benign: "not cancerous",
+    "ductal carcinoma in situ": "early-stage breast cancer",
+    "invasive ductal carcinoma": "breast cancer that has spread beyond milk ducts",
+    "lobular carcinoma": "cancer in milk-producing areas",
+    mastectomy: "surgery to remove the breast",
+    lumpectomy: "surgery to remove only the tumor",
+    "radiation therapy": "treatment using special rays",
+    chemotherapy: "strong medicine to kill cancer cells",
+    "hormone therapy": "treatment that blocks certain hormones",
+    immunotherapy: "treatment that helps your body fight cancer",
+    "neoadjuvant therapy": "treatment before surgery",
+    "adjuvant therapy": "treatment after surgery",
+    "lymph nodes": "small filtering spots in your body",
+    "mammogram": "breast X-ray",
+    "ultrasound": "imaging test using sound waves",
+    "MRI": "detailed body scan",
+    remission: "cancer getting better or going away",
+    stage: "how far cancer has developed",
+    prognosis: "outlook or chance of recovery"
+  };
+
+  // Check for direct match in simplifications
+  if (simplifications[termDefinition.term.toLowerCase()]) {
+    return simplifications[termDefinition.term.toLowerCase()];
+  }
+
+  // If no direct match, provide a simplified version based on category
+  switch (termDefinition.category) {
+    case 'diagnosis':
+      return `A way doctors can tell if you have breast cancer or how serious it is.`;
+    case 'treatment':
+      return `A method doctors use to treat breast cancer and help you get better.`;
+    case 'anatomy':
+      return `A part of the body related to breast cancer.`;
+    case 'procedure':
+      return `A medical test or operation done by healthcare providers.`;
+    case 'general':
+    default:
+      return `Important information about your breast cancer care explained in everyday words.`;
+  }
+}
+
 interface MedicalTermTooltipProps {
   term: string;
   children: React.ReactNode;
@@ -87,9 +141,10 @@ export default function MedicalTermTooltip({
       <span
         ref={termRef}
         onClick={handleToggle}
-        className="medical-term-highlight cursor-pointer border-b border-dashed border-primary/50 text-white hover:text-primary transition-colors"
+        className="medical-term-highlight cursor-pointer px-1 rounded bg-primary/10 border-b border-dashed border-primary/50 text-white hover:bg-primary/20 hover:text-primary transition-colors"
       >
         {children}
+        <span className="inline-block w-2 h-2 ml-0.5 rounded-full bg-primary/70 align-middle"></span>
       </span>
       
       {isVisible && termDefinition && (
@@ -119,7 +174,15 @@ export default function MedicalTermTooltip({
               {/* Tooltip body */}
               <div className="p-3 bg-gray-900/90">
                 <h5 className="font-semibold text-white mb-1">{termDefinition.term}</h5>
-                <p className="text-gray-300 text-sm">{termDefinition.definition}</p>
+                <div className="border-b border-white/10 mb-2 pb-2">
+                  <p className="text-gray-300 text-sm">{termDefinition.definition}</p>
+                </div>
+                <div className="mt-2">
+                  <p className="text-xs font-semibold text-primary mb-1">In simple terms:</p>
+                  <p className="text-gray-300 text-xs italic">
+                    {getSimplifiedDefinition(termDefinition)}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
