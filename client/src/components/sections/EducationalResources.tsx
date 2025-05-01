@@ -15,9 +15,11 @@ import {
   Database,
   GitBranch,
   Fingerprint,
-  Clock
+  Clock,
+  FileText
 } from "lucide-react";
 import { Link } from "wouter";
+import MedicalInfoReportGenerator from "@/components/ui/MedicalInfoReportGenerator";
 
 export default function EducationalResources() {
   // State for selected tab and neural network analysis results
@@ -583,6 +585,27 @@ export default function EducationalResources() {
                 Explore All Neural Network Articles <ArrowRight className="ml-1 sm:ml-2 h-3 w-3 sm:h-4 sm:w-4" />
               </Button>
             </Link>
+          </div>
+        </div>
+        
+        {/* Medical Information PDF Reports Section */}
+        <div className="mt-16 sm:mt-20 md:mt-24">
+          <div className="text-center mb-8 sm:mb-12">
+            <div className="inline-flex items-center mb-3 sm:mb-4 px-3 py-1 rounded-full text-accent bg-accent/10 backdrop-blur-sm border border-accent/20">
+              <FileText className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-2" />
+              <span className="text-xs sm:text-sm font-medium">Medical Literature</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-3 sm:mb-5 bg-clip-text text-transparent bg-gradient-to-r from-white via-accent to-white">
+              Professional PDF Reports
+            </h2>
+            <p className="text-gray-400 max-w-2xl mx-auto text-sm sm:text-base md:text-lg px-2">
+              Generate comprehensive, clinically accurate PDF reports for patient education and medical reference
+            </p>
+          </div>
+          
+          {/* Medical Information Report Generator */}
+          <div className="max-w-3xl mx-auto">
+            <MedicalInfoReportGenerator />
           </div>
         </div>
       </div>
