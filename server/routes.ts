@@ -7,7 +7,7 @@ import { ZodError } from "zod";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import OpenAI from "openai";
 import multer from "multer";
-import { generatePredictionReport, generateMedicalInfoReport } from "./pdfGenerator";
+import { generatePredictionReport, generateMedicalInfoReport, generateAnalyticsReport } from "./pdfGenerator";
 
 // Load API keys from environment variables
 const geminiApiKey = process.env.GEMINI_API_KEY || "dummy-key-for-development";

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAnalytics, ChartData } from "@/hooks/useAnalytics";
+import { generateAnalyticsReport } from "@/lib/pdfReportService";
 import { 
   LineChart, 
   Line, 
@@ -41,7 +42,8 @@ import {
   Zap,
   AlertTriangle,
   RotateCcw,
-  Link as LinkIcon
+  Link as LinkIcon,
+  FileText
 } from "lucide-react";
 
 // Custom colors for charts - matched to the site's color scheme
@@ -374,7 +376,7 @@ export default function MedicalAnalytics() {
           <div className="flex flex-wrap gap-2">
             <Button 
               variant="outline" 
-              className="border-gray-300 hover:bg-gray-50"
+              className="border-gray-300 hover:bg-gray-50 mr-2"
               onClick={() => {
                 // Create CSV data from analytics
                 const csvData = [
@@ -397,7 +399,19 @@ export default function MedicalAnalytics() {
               }}
             >
               <Download className="h-4 w-4 mr-2" />
-              Export Data
+              Export CSV
+            </Button>
+            <Button 
+              variant="outline" 
+              className="border-gray-300 hover:bg-gray-50"
+              onClick={() => {
+                // Generate PDF report from analytics data
+                const chartType = activeTab !== 'overview' ? activeTab : undefined;
+                generateAnalyticsReport(data, chartType);
+              }}
+            >
+              <FileText className="h-4 w-4 mr-2" />
+              Export PDF
             </Button>
             <Button 
               variant="outline" 
