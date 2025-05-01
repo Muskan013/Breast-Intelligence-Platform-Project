@@ -1,4 +1,4 @@
-import { useLocation } from "wouter";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 
@@ -17,8 +17,6 @@ export default function BackButton({
   variant = "outline",
   size = "sm"
 }: BackButtonProps) {
-  const [, setLocation] = useLocation();
-
   // Default styling based on size
   const sizeClasses = {
     sm: "text-xs h-8 px-3",
@@ -27,13 +25,14 @@ export default function BackButton({
   };
 
   return (
-    <Button
-      variant={variant}
-      onClick={() => setLocation(to)}
-      className={`inline-flex items-center rounded-full gap-1.5 ${sizeClasses[size]} ${className}`}
-    >
-      <ArrowLeft className={`${size === "sm" ? "h-3.5 w-3.5" : size === "md" ? "h-4 w-4" : "h-5 w-5"}`} />
-      {label}
-    </Button>
+    <Link href={to}>
+      <Button
+        variant={variant}
+        className={`inline-flex items-center rounded-full gap-1.5 ${sizeClasses[size]} ${className}`}
+      >
+        <ArrowLeft className={`${size === "sm" ? "h-3.5 w-3.5" : size === "md" ? "h-4 w-4" : "h-5 w-5"}`} />
+        {label}
+      </Button>
+    </Link>
   );
 }

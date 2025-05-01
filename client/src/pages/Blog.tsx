@@ -340,7 +340,7 @@ function BlogHome() {
                 </p>
                 
                 <div className="flex justify-between items-center mt-3 sm:mt-4">
-                  <Link href={`/blog/${article.id}`}>
+                  <Link to={`/blog/${article.id}`}>
                     <Button className="btn-futuristic text-xs sm:text-sm py-1 px-2 sm:px-3 h-auto">
                       Read Article <ArrowRight className="ml-1 h-2.5 w-2.5 sm:h-3 sm:w-3" />
                     </Button>
@@ -546,7 +546,7 @@ function ArticleDetail({ articleId }: { articleId: string }) {
               <div className="space-y-4">
                 {relatedArticles.map(relatedArticle => (
                   <div key={relatedArticle.id} className="group">
-                    <Link href={`/blog/${relatedArticle.id}`}>
+                    <Link to={`/blog/${relatedArticle.id}`}>
                       <div className="flex gap-3 group-hover:bg-white/5 p-2 rounded-lg transition-colors">
                         <div className="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
                           <img 

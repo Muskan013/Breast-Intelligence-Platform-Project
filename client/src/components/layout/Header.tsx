@@ -63,7 +63,7 @@ export default function Header() {
             <ul className="flex space-x-1 lg:space-x-2">
               <li>
                 <Link 
-                  href="/" 
+                  to="/" 
                   onClick={handleLinkClick}
                   className="hover:bg-primary/20 px-2 lg:px-3 py-1.5 rounded-full transition-colors font-medium flex items-center text-sm lg:text-base"
                 >
@@ -105,7 +105,7 @@ export default function Header() {
               </li>
               <li>
                 <Link 
-                  href="/blog"
+                  to="/blog"
                   onClick={handleLinkClick}
                   className="hover:bg-primary/20 px-2 lg:px-3 py-1.5 rounded-full transition-colors font-medium flex items-center text-sm lg:text-base"
                 >
@@ -123,7 +123,7 @@ export default function Header() {
             <ul className="flex flex-col divide-y divide-gray-800/70">
               <li>
                 <Link 
-                  href="/" 
+                  to="/" 
                   onClick={handleLinkClick}
                   className="hover:bg-primary/20 px-4 py-3 transition-colors font-medium flex items-center"
                 >
@@ -165,7 +165,7 @@ export default function Header() {
               </li>
               <li>
                 <Link 
-                  href="/blog" 
+                  to="/blog" 
                   onClick={handleLinkClick}
                   className="hover:bg-primary/20 px-4 py-3 transition-colors font-medium flex items-center"
                 >
