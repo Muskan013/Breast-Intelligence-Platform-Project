@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useChat } from "@/hooks/useChat";
 import { Send, Bot, User, RefreshCw, MessageSquare, Mic, MicOff, Volume2 } from "lucide-react";
+import BackButton from "@/components/ui/BackButton";
 
 // TypeScript declarations for Web Speech API
 declare global {
@@ -131,6 +132,10 @@ export default function AIAssistantChat() {
       </div>
 
       <div className="container mx-auto px-3 sm:px-4 relative z-10">
+        <div className="mb-4 sm:mb-6 flex justify-center">
+          <BackButton to="/" label="Back to Home" variant="outline" className="bg-black/30 text-white hover:bg-black/50 border-white/10" />
+        </div>
+        
         <div className="text-center mb-8 md:mb-16">
           <div className="inline-flex items-center mb-4 px-3 py-1 rounded-full text-primary bg-primary/10 backdrop-blur-sm border border-primary/20">
             <MessageSquare className="h-4 w-4 mr-2" />

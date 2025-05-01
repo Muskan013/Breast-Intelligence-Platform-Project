@@ -12,6 +12,7 @@ import {
   BookOpen
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import BackButton from "@/components/ui/BackButton";
 
 // Blog article interface
 interface BlogArticle {
@@ -251,6 +252,10 @@ function BlogHome() {
       </div>
       
       <div className="container mx-auto px-3 sm:px-4 relative">
+        <div className="mb-4 sm:mb-6">
+          <BackButton to="/" label="Back to Home" variant="outline" className="bg-black/30 text-white hover:bg-black/50 border-white/10" />
+        </div>
+        
         <div className="text-center mb-8 sm:mb-12 md:mb-16">
           <div className="inline-flex items-center mb-3 sm:mb-4 px-3 py-1 rounded-full text-primary bg-primary/10 backdrop-blur-sm border border-primary/20">
             <BookOpen className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-2" />
@@ -390,6 +395,10 @@ function ArticleDetail({ articleId }: { articleId: string }) {
       </div>
       
       <div className="container mx-auto px-4 relative">
+        <div className="mb-4 sm:mb-6">
+          <BackButton to="/blog" label="Back to Blog" variant="outline" className="bg-black/30 text-white hover:bg-black/50 border-white/10" />
+        </div>
+        
         {/* Breadcrumb */}
         <div className="mb-8 flex items-center text-gray-400 text-sm">
           <Button 
