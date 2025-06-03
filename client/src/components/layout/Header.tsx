@@ -1,6 +1,14 @@
 import { useState, useEffect } from "react";
 import { Link } from "wouter";
-import { Activity, Zap, Database, HeartPulse, BookOpen, Menu, X } from "lucide-react";
+import {
+  Activity,
+  Zap,
+  Database,
+  HeartPulse,
+  BookOpen,
+  Menu,
+  X,
+} from "lucide-react";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -11,16 +19,16 @@ export default function Header() {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     // Initial check
     checkMobile();
-    
+
     // Add event listener for window resize
-    window.addEventListener('resize', checkMobile);
-    
+    window.addEventListener("resize", checkMobile);
+
     // Cleanup
     return () => {
-      window.removeEventListener('resize', checkMobile);
+      window.removeEventListener("resize", checkMobile);
     };
   }, []);
 
@@ -41,12 +49,12 @@ export default function Header() {
               <div className="absolute inset-0 bg-primary rounded-full blur-lg opacity-40"></div>
             </div>
             <h1 className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-primary via-accent to-secondary">
-              BreastCare <span className="text-white">Predict</span>
+              Clairvoyant <span className="text-white">Predict</span>
             </h1>
           </div>
 
           {/* Mobile menu button */}
-          <button 
+          <button
             className="md:hidden flex items-center justify-center h-10 w-10 rounded-full bg-gray-900 bg-opacity-70 backdrop-blur-md border border-gray-800"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             aria-label="Toggle menu"
@@ -57,13 +65,13 @@ export default function Header() {
               <Menu className="h-5 w-5 text-primary" />
             )}
           </button>
-          
+
           {/* Desktop navigation */}
           <nav className="hidden md:block bg-gray-900 p-2 rounded-full bg-opacity-70 backdrop-blur-md border border-gray-800 glow-border">
             <ul className="flex space-x-1 lg:space-x-2">
               <li>
-                <Link 
-                  to="/" 
+                <Link
+                  to="/"
                   onClick={handleLinkClick}
                   className="hover:bg-primary/20 px-2 lg:px-3 py-1.5 rounded-full transition-colors font-medium flex items-center text-sm lg:text-base"
                 >
@@ -72,8 +80,8 @@ export default function Header() {
                 </Link>
               </li>
               <li>
-                <a 
-                  href="#prediction" 
+                <a
+                  href="#prediction"
                   onClick={handleLinkClick}
                   className="hover:bg-primary/20 px-2 lg:px-3 py-1.5 rounded-full transition-colors font-medium flex items-center text-sm lg:text-base"
                 >
@@ -82,8 +90,8 @@ export default function Header() {
                 </a>
               </li>
               <li>
-                <a 
-                  href="#resources" 
+                <a
+                  href="#resources"
                   onClick={handleLinkClick}
                   className="hover:bg-primary/20 px-2 lg:px-3 py-1.5 rounded-full transition-colors font-medium flex items-center text-sm lg:text-base"
                 >
@@ -92,7 +100,7 @@ export default function Header() {
                 </a>
               </li>
               <li>
-                <a 
+                <a
                   href="#assistant"
                   onClick={handleLinkClick}
                   className="hover:bg-primary/20 px-2 lg:px-3 py-1.5 rounded-full transition-colors font-medium flex items-center text-sm lg:text-base"
@@ -104,7 +112,7 @@ export default function Header() {
                 </a>
               </li>
               <li>
-                <Link 
+                <Link
                   to="/blog"
                   onClick={handleLinkClick}
                   className="hover:bg-primary/20 px-2 lg:px-3 py-1.5 rounded-full transition-colors font-medium flex items-center text-sm lg:text-base"
@@ -122,8 +130,8 @@ export default function Header() {
           <nav className="mt-4 bg-gray-900 rounded-xl bg-opacity-90 backdrop-blur-md border border-gray-800 overflow-hidden animate-in slide-in-from-top">
             <ul className="flex flex-col divide-y divide-gray-800/70">
               <li>
-                <Link 
-                  to="/" 
+                <Link
+                  to="/"
                   onClick={handleLinkClick}
                   className="hover:bg-primary/20 px-4 py-3 transition-colors font-medium flex items-center"
                 >
@@ -132,8 +140,8 @@ export default function Header() {
                 </Link>
               </li>
               <li>
-                <a 
-                  href="#prediction" 
+                <a
+                  href="#prediction"
                   onClick={handleLinkClick}
                   className="hover:bg-primary/20 px-4 py-3 transition-colors font-medium flex items-center"
                 >
@@ -142,8 +150,8 @@ export default function Header() {
                 </a>
               </li>
               <li>
-                <a 
-                  href="#resources" 
+                <a
+                  href="#resources"
                   onClick={handleLinkClick}
                   className="hover:bg-primary/20 px-4 py-3 transition-colors font-medium flex items-center"
                 >
@@ -152,8 +160,8 @@ export default function Header() {
                 </a>
               </li>
               <li>
-                <a 
-                  href="#assistant" 
+                <a
+                  href="#assistant"
                   onClick={handleLinkClick}
                   className="hover:bg-primary/20 px-4 py-3 transition-colors font-medium flex items-center"
                 >
@@ -164,8 +172,8 @@ export default function Header() {
                 </a>
               </li>
               <li>
-                <Link 
-                  to="/blog" 
+                <Link
+                  to="/blog"
                   onClick={handleLinkClick}
                   className="hover:bg-primary/20 px-4 py-3 transition-colors font-medium flex items-center"
                 >

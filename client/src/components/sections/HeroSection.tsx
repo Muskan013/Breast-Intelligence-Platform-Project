@@ -27,11 +27,11 @@ export default function HeroSection() {
             </div>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight">
-              <span className="block">BreastCare</span>
+              <span className="block">CLAIRVOYANT BREAST CANCER </span>
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-accent to-secondary">
-                Predict
+                INTELLIGENCE
               </span>
-              <span className="block">AI Platform</span>
+              <span className="block">PLATFORM</span>
             </h1>
             
             <p className="text-lg text-gray-300 mb-8 max-w-xl">
