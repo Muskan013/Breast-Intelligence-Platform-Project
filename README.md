@@ -152,7 +152,7 @@ Example:
 
 ```md
 ## Live Demo
-https://your-website-link.com
+https://33b27e4f-36e9-4158-9d9c-dfd8a4727fbd-00-2y7l03yaoxqo2.riker.replit.dev/
 ```
 
 ---
